@@ -22,7 +22,9 @@ import com.oddzmint.actionpilotai.domain.ActionExecutor
 import com.oddzmint.actionpilotai.presentation.components.ChatInputBar
 import com.oddzmint.actionpilotai.presentation.components.MessageBubble
 import androidx.compose.foundation.lazy.items
-
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import com.oddzmint.actionpilotai.R
 @Composable
 fun ChatScreen(
     viewModel: ChatViewModel
@@ -45,12 +47,13 @@ fun ChatScreen(
                 .padding(16.dp)
         ) {
             Text(
-                text = "ActionPilotAI",
-                style = MaterialTheme.typography.headlineMedium
+                text = stringResource(R.string.headline_title),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.SemiBold
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Type what you want. I'll turn it into an action.",
+                text = stringResource(R.string.sub_text_heading),
                 style = MaterialTheme.typography.bodyMedium
             )
             Spacer(modifier = Modifier.height(16.dp))

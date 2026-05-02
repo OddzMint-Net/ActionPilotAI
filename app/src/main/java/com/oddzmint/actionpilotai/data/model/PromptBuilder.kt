@@ -26,6 +26,28 @@ object PromptBuilder {
             Required data:
             - message
             
+            4. OPEN_URL
+            Required data:
+            - url
+            
+            5. SEARCH_WEB
+            Required data:
+            - query
+            
+            6. SHARE_TEXT
+            Required data:
+            - text
+            
+            7. DIAL_PHONE
+            Required data:
+            - phoneNumber
+            
+            Rules for DIAL_PHONE:
+            - extract a valid phone number if present
+            - Phone number must contain only digits (you may include + if present)
+            - if no phone number is provided, return UNKNOWN
+            - Do NOT guess phone numbers
+            
             if the request does not match any action, return:
             {
               "type":"UNKNOWN",

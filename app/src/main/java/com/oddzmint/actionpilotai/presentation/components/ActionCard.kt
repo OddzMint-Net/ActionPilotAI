@@ -11,7 +11,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.oddzmint.actionpilotai.R
 import com.oddzmint.actionpilotai.data.model.AIAction
 import com.oddzmint.actionpilotai.data.model.ActionType
 
@@ -41,13 +43,10 @@ fun ActionCard(
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-            Button(
-                onClick = {
-                    onConfirmClick(action)
-                }
-            ) {
-                Text("Confirm")
-            }
+            PrimaryButton(
+                text = stringResource(R.string.confirm),
+                onClick = { onConfirmClick(action) }
+            )
         }
     }
 }
@@ -57,6 +56,10 @@ private fun getActionTitle(type: ActionType): String {
         ActionType.CREATE_EVENT -> "\uD83D\uDCC5 Create Event"
         ActionType.OPEN_MAPS -> "\uD83D\uDCCD Open Maps"
         ActionType.GENERATE_REPLY -> "\uD83D\uDCAC Generate Reply"
+        ActionType.DIAL_PHONE -> "Open Phone Dialer"
+        ActionType.SHARE_TEXT -> "Share text"
+        ActionType.SEARCH_WEB -> "Search web"
+        ActionType.OPEN_URL -> "Open URL"
         ActionType.UNKNOWN -> "❓ Unknown Action"
     }
 }
