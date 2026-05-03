@@ -2,4 +2,12 @@
 plugins {
     id("com.android.application") version "9.0.0-alpha06" apply false
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.21" apply false
+    id("org.sonarqube") version "7.2.3.7755"
+}
+sonar {
+    properties {
+        property("sonar.projectKey", "OddzMint-Net_ActionPilotAI")
+        property("sonar.organization", "oddzmint-net")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
