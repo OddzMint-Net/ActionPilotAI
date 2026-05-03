@@ -8,15 +8,18 @@ import com.oddzmint.actionpilotai.BuildConfig
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.HttpURLConnection
-import java.net.URL
+import java.net.URI
 
 
 class GeminiService {
+    companion object {
+        private const val GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    }
+
     suspend fun getAction(userInput: String): String {
         return withContext(Dispatchers.IO) {
             val apiKey = BuildConfig.GEMINI_API_KEY
-            val url =
-                URL("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$apiKey")
+            val url = URI("$GEMINI_ENDPOINT?key=$apiKey").toURL()
             val prompt = PromptBuilder.buildPrompt(userInput)
             val requestBody = JSONObject().apply {
                 put("contents", JSONArray().apply {

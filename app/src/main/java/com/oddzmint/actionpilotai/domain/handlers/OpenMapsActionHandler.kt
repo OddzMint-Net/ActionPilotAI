@@ -7,7 +7,7 @@ import com.oddzmint.actionpilotai.data.model.AIAction
 import com.oddzmint.actionpilotai.data.model.ActionType
 import com.oddzmint.actionpilotai.domain.ActionHandler
 
-class OpenMapsActionHandler() : ActionHandler {
+class OpenMapsActionHandler : ActionHandler {
     override val type: ActionType = ActionType.OPEN_MAPS
 
     override fun execute(
