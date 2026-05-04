@@ -14,7 +14,6 @@ class OpenMapsActionHandler : ActionHandler {
         context: Context,
         action: AIAction
     ) {
-        val location = action.data["location"].orEmpty()
         val uri = Uri.parse("geo:0,0?q=\${Uri.encode(location)}")
         val mapsIntent = Intent(Intent.ACTION_VIEW,uri).apply {
             setPackage("com.google.android.apps.maps")
