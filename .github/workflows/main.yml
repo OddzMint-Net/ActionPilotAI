@@ -28,7 +28,10 @@ jobs:
           gradle-version: 8.14
 
       - name: Create local.properties
-        run: echo "ACTIONPILOT_GEMINI_API_KEY=${{ secrets.ACTIONPILOT_GEMINI_API_KEY }}" > local.properties 
+        env:
+          ACTIONPILOT_GEMINI_API_KEY: ${{ secrets.ACTIONPILOT_GEMINI_API_KEY }}
+        run: |
+          echo "ACTIONPILOT_GEMINI_API_KEY=$ACTIONPILOT_GEMINI_API_KEY" > local.properties 
 
       - name: Build and analyze
         env:
