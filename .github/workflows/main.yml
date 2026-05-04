@@ -27,7 +27,12 @@ jobs:
         with:
           gradle-version: 9.0.0
 
+      - name: Create local.properties
+        run: echo "ACTIONPILOT_GEMINI_API_KEY=${{ secrets.ACTIONPILOT_GEMINI_API_KEY }}" > local.properties 
+
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: gradle build sonar
+
+        
