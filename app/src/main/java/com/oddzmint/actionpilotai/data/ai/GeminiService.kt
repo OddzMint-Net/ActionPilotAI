@@ -12,7 +12,7 @@ import java.net.HttpURLConnection
 import java.net.URI
 
 
-class GeminiService(private val ioDispatcher: CoroutineDispatcher) {
+class GeminiService(private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) {
     companion object {
         private const val GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
     }
