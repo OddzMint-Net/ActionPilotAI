@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.core.net.toUri
 import com.oddzmint.actionpilotai.data.model.AIAction
 import com.oddzmint.actionpilotai.data.model.ActionType
 import com.oddzmint.actionpilotai.domain.ActionHandler
@@ -23,7 +24,7 @@ class DialPhoneActionHandler() : ActionHandler {
         }
 
         val intent = Intent(Intent.ACTION_DIAL).apply {
-            data = Uri.parse("tel:\${Uri.encode(phoneNumber)}")
+            data = "tel:\${Uri.encode(phoneNumber)}".toUri()
         }
         context.startActivity(intent)
     }
