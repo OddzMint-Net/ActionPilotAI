@@ -30,6 +30,9 @@ jobs:
         with:
           gradle-version: 8.14
 
+      - name: Generate Gradle wrapper
+        run: gradle wrapper --gradle-version 8.14
+
       - name: Create local.properties
         env:
           ACTIONPILOT_GEMINI_API_KEY: ${{ secrets.ACTIONPILOT_GEMINI_API_KEY }}
@@ -39,12 +42,12 @@ jobs:
       - name: Generate Gradle verification metadata
         run: gradle --write-verification-metadata sha256 build
 
-      - name: Commit Gradle verification metadata
+      - name: Commit Gradle wrapper and verification metadata
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add gradle/verification-metadata.xml
-          git commit -m "Add Gradle dependency verification metadata" || echo "No metadata changes to commit"
+          git add gradlew gradlew.bat gradle/wrapper/ gradle/verification-metadata.xml
+          git commit -m "Add Gradle wrapper and dependency verification metadata" || echo "No changes to commit"
           git push
 
       - name: Run Sonar analysis
