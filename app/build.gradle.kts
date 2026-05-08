@@ -78,6 +78,9 @@ dependencies {
     implementation(libs.viewmodel.compose)
 
     testImplementation(libs.junit)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.mockk)
 
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.espresso.core)
