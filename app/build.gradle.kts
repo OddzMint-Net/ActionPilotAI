@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("jacoco")
 }
 
 val localProps = Properties().apply {
@@ -38,6 +39,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -85,4 +89,36 @@ dependencies {
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+
+    val fileFilter = listOf(
+        "**/R.class",
+        "**/R$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*Test*.*"
+    )
+
+    val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+
+    classDirectories.setFrom(files(debugTree))
+    sourceDirectories.setFrom(files("src/main/java"))
+    executionData.setFrom(
+        fileTree(layout.buildDirectory.get()) {
+            include(
+                "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+                "jacoco/testDebugUnitTest.exec"
+            )
+        }
+    )
 }

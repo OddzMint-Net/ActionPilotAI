@@ -10,5 +10,9 @@ sonar {
         property("sonar.projectKey", "OddzMint-Net_ActionPilotAI")
         property("sonar.organization", "oddzmint-net")
         property("sonar.host.url", "https://sonarcloud.io")
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            "app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+        )
     }
 }
