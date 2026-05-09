@@ -1,0 +1,69 @@
+package com.oddzmint.actionpilotai
+
+import com.oddzmint.actionpilotai.domain.AIActionService
+import com.oddzmint.actionpilotai.presentation.ChatViewModel
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import org.junit.Rule
+import org.junit.Test
+
+class ChatViewModelTest {
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
+    private class FakeAIActionService : AIActionService {
+        override suspend fun getAction(userInput: String): String {
+            return """
+                {
+                "type":"CREATE_EVENT",
+                "data": {
+                "title":"Team meeting",
+                "date":"2026-05-10",
+                "time":"08:30"
+                }
+               }
+            """.trimIndent()
+        }
+    }
+
+    @Test
+    fun `onInputChange updates user input`() {
+        val viewModel = ChatViewModel(
+            aiActionService = FakeAIActionService()
+        )
+        viewModel.onInputChange("Create meeting tomorrow")
+        assertEquals("Create meeting tomorrow",viewModel.uiState.value.userInput)
+    }
+
+    @Test
+    fun `onSendClick adds user message and clears input`() = runTest {
+        val viewModel = ChatViewModel(
+            aiActionService = FakeAIActionService()
+        )
+
+        viewModel.onInputChange("Schedule meeting tomorrow")
+        viewModel.onSendClick()
+        val state = viewModel.uiState.value
+        assertEquals("",state.userInput)
+        assertEquals(2,state.message.size)
+        assertEquals("Schedule meeting tomorrow",state.message.first().text)
+
+        assertTrue(state.message.first().isFromUser)
+    }
+
+    @Test
+    fun `onSendClick shows error message when service fails`() = runTest {
+        val viewModel = ChatViewModel(
+            aiActionService = FailingAIActionService()
+        )
+        viewModel.onInputChange("Schedule meeting tomorrow")
+        viewModel.onSendClick()
+        val state = viewModel.uiState.value
+        assertEquals(false,state.isLoading)
+        assertEquals(2,state.message.size)
+        assertEquals("Something went wrong. Please try again.",state.message.last().text)
+        assertFalse(state.message.last().isFromUser)
+    }
+}

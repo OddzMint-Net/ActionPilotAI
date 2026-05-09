@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oddzmint.actionpilotai.data.ai.GeminiService
 import com.oddzmint.actionpilotai.data.model.ChatMessage
+import com.oddzmint.actionpilotai.domain.AIActionService
 import com.oddzmint.actionpilotai.domain.ActionParser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,8 +12,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ChatViewModel : ViewModel() {
-    private val geminiService = GeminiService()
+class ChatViewModel(
+    private val aiActionService: AIActionService = GeminiService()
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChatUiState())
     val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()
@@ -40,7 +42,7 @@ class ChatViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val aiResponse = geminiService.getAction(input)
+                val aiResponse = aiActionService.getAction(input)
                 val action = ActionParser.parse(aiResponse)
 
                 val aiMessage = ChatMessage(

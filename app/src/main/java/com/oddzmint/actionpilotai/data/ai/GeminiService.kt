@@ -5,6 +5,7 @@ import com.oddzmint.actionpilotai.data.model.PromptBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.oddzmint.actionpilotai.BuildConfig
+import com.oddzmint.actionpilotai.domain.AIActionService
 import kotlinx.coroutines.CoroutineDispatcher
 import org.json.JSONArray
 import org.json.JSONObject
@@ -12,12 +13,12 @@ import java.net.HttpURLConnection
 import java.net.URI
 
 
-class GeminiService(private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) {
+class GeminiService(private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) : AIActionService {
     companion object {
         private const val GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
     }
 
-    suspend fun getAction(userInput: String): String {
+    override suspend fun getAction(userInput: String): String {
         return withContext(ioDispatcher) {
             val apiKey = BuildConfig.GEMINI_API_KEY
             val url = URI("$GEMINI_ENDPOINT?key=$apiKey").toURL()

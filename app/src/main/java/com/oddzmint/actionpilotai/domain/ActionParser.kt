@@ -16,7 +16,7 @@ object ActionParser {
             val typeString = jsonObject.optString("type", "UNKNOWN")
             val actionType = try {
                 ActionType.valueOf(typeString)
-            } catch (e: IllegalStateException) {
+            } catch (e: IllegalArgumentException) {
                 ActionType.UNKNOWN
             }
             val dataObject = jsonObject.optJSONObject("data")

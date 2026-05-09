@@ -89,6 +89,7 @@ dependencies {
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    testImplementation(libs.json)
 }
 
 tasks.register<JacocoReport>("jacocoTestReport") {
