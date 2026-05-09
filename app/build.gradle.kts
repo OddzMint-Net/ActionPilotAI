@@ -93,6 +93,9 @@ dependencies {
 }
 
 tasks.register<JacocoReport>("jacocoTestReport") {
+    group = "verification"
+    description = "Generates JaCoCo coverage reports for debug unit tests."
+
     dependsOn("testDebugUnitTest")
 
     reports {

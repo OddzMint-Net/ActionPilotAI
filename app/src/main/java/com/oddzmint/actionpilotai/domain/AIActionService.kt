@@ -1,5 +1,5 @@
 package com.oddzmint.actionpilotai.domain
 
-interface AIActionService {
+fun interface AIActionService {
     suspend fun getAction(userInput: String): String
 }
