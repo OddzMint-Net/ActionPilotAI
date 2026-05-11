@@ -39,6 +39,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true  // <-- ADDED: writes the .exec file
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -108,17 +111,24 @@ tasks.register<JacocoReport>("jacocoTestReport") {
         "**/R$*.class",
         "**/BuildConfig.*",
         "**/Manifest*.*",
-        "**/*Test*.*"
+        "**/*Test*.*",
+        "**/*_Impl*.*",
+        "**/ComposableSingletons*.*"
     )
+    val buildDir = layout.buildDirectory.get()
 
-    val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+    // CHANGED: include both paths — AGP 8.x puts Kotlin classes in intermediates
+    val kotlinClasses = fileTree("$buildDir/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+    val javaClasses = fileTree("$buildDir/intermediates/javac/debug/classes") {
         exclude(fileFilter)
     }
 
-    classDirectories.setFrom(files(debugTree))
-    sourceDirectories.setFrom(files("src/main/java"))
+    classDirectories.setFrom(files(kotlinClasses, javaClasses))
+    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin")) // ADDED src/main/kotlin
     executionData.setFrom(
-        fileTree(layout.buildDirectory.get()) {
+        fileTree(buildDir) {
             include(
                 "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
                 "jacoco/testDebugUnitTest.exec"
