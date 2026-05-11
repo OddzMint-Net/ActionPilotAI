@@ -4,7 +4,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
-    id("jacoco")
+    // REMOVED: id("jacoco") - conflicts with AGP 8.x
 }
 
 val localProps = Properties().apply {
@@ -34,13 +34,12 @@ android {
             "String",
             "GEMINI_API_KEY",
             "\"${prop("ACTIONPILOT_GEMINI_API_KEY")}\""
-
         )
     }
 
     buildTypes {
         debug {
-            enableUnitTestCoverage = true  // <-- ADDED: writes the .exec file
+            enableUnitTestCoverage = true
         }
         release {
             isMinifyEnabled = true
@@ -60,16 +59,6 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-
-    // ADDED: stops AGP from interfering with Jacoco task wiring
-    testOptions {
-        unitTests.all {
-            it.extensions.configure(JacocoTaskExtension::class.java) {
-                isIncludeNoLocationClasses = true
-                excludes = listOf("jdk.internal.*")
-            }
-        }
     }
 }
 
