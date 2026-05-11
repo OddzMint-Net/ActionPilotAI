@@ -115,9 +115,9 @@ tasks.register<JacocoReport>("jacocoTestReport") {
         "**/*_Impl*.*",
         "**/ComposableSingletons*.*"
     )
+
     val buildDir = layout.buildDirectory.get()
 
-    // CHANGED: include both paths — AGP 8.x puts Kotlin classes in intermediates
     val kotlinClasses = fileTree("$buildDir/tmp/kotlin-classes/debug") {
         exclude(fileFilter)
     }
@@ -126,13 +126,17 @@ tasks.register<JacocoReport>("jacocoTestReport") {
     }
 
     classDirectories.setFrom(files(kotlinClasses, javaClasses))
-    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin")) // ADDED src/main/kotlin
-    executionData.setFrom(
-        fileTree(buildDir) {
-            include(
-                "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
-                "jacoco/testDebugUnitTest.exec"
-            )
-        }
-    )
+    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
+
+    // CHANGED: use doFirst to resolve the exec file path lazily, after the test task completes
+    doFirst {
+        executionData.setFrom(
+            fileTree(buildDir) {
+                include(
+                    "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+                    "jacoco/testDebugUnitTest.exec"
+                )
+            }
+        )
+    }
 }
