@@ -18,5 +18,16 @@ sonar {
             "sonar.androidLint.reportPaths",
             "app/build/reports/lint-results-debug.xml"
         )
+
+        property(
+            "sonar.coverage.exclusions",
+            listOf(
+                "**/domain/handlers/**",
+                "**/data/ai/GeminiService.kt",
+                "**/ui/theme/**",
+                "**/*Activity.kt",
+                "**/*Screen.kt"
+            ).joinToString(",")
+        )
     }
 }

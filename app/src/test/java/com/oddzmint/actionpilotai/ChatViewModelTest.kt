@@ -34,7 +34,7 @@ class ChatViewModelTest {
             aiActionService = FakeAIActionService()
         )
         viewModel.onInputChange("Create meeting tomorrow")
-        assertEquals("Create meeting tomorrow",viewModel.uiState.value.userInput)
+        assertEquals("Create meeting tomorrow", viewModel.uiState.value.userInput)
     }
 
     @Test
@@ -46,9 +46,9 @@ class ChatViewModelTest {
         viewModel.onInputChange("Schedule meeting tomorrow")
         viewModel.onSendClick()
         val state = viewModel.uiState.value
-        assertEquals("",state.userInput)
-        assertEquals(2,state.message.size)
-        assertEquals("Schedule meeting tomorrow",state.message.first().text)
+        assertEquals("", state.userInput)
+        assertEquals(2, state.message.size)
+        assertEquals("Schedule meeting tomorrow", state.message.first().text)
 
         assertTrue(state.message.first().isFromUser)
     }
@@ -61,9 +61,19 @@ class ChatViewModelTest {
         viewModel.onInputChange("Schedule meeting tomorrow")
         viewModel.onSendClick()
         val state = viewModel.uiState.value
-        assertEquals(false,state.isLoading)
-        assertEquals(2,state.message.size)
-        assertEquals("Something went wrong. Please try again.",state.message.last().text)
+        assertEquals(false, state.isLoading)
+        assertEquals(2, state.message.size)
+        assertEquals("Something went wrong. Please try again.", state.message.last().text)
         assertFalse(state.message.last().isFromUser)
+    }
+
+    @Test
+    fun `initial state is empty`() {
+        val viewModel = ChatViewModel()
+        val state = viewModel.uiState.value
+
+        assertEquals("",state.userInput)
+        assertEquals(false,state.isLoading)
+        assertTrue(state.message.isEmpty())
     }
 }
