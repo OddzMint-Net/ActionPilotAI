@@ -72,8 +72,25 @@ class ChatViewModelTest {
         val viewModel = ChatViewModel()
         val state = viewModel.uiState.value
 
-        assertEquals("",state.userInput)
-        assertEquals(false,state.isLoading)
+        assertEquals("", state.userInput)
+        assertEquals(false, state.isLoading)
         assertTrue(state.message.isEmpty())
+    }
+
+    @Test
+    fun `onSendClick does nothing when input is blank`() = runTest {
+        val viewModel = ChatViewModel(
+            aiActionService = FakeAIActionService()
+        )
+
+        viewModel.onInputChange(" ")
+
+        viewModel.onSendClick()
+
+        val state = viewModel.uiState.value
+
+        assertTrue(state.message.isEmpty())
+        assertEquals(" ",state.userInput)
+        assertFalse(state.isLoading)
     }
 }
