@@ -96,7 +96,7 @@ class ChatViewModelTest {
 
     @Test
     fun `initial state is empty when using default view model constructor`(){
-        val viewModel = ChatViewModel()
+        val viewModel = ChatViewModel(aiActionService = FakeAIActionService())
         val state = viewModel.uiState.value
         assertTrue(state.message.isEmpty())
         assertEquals("",state.userInput)
