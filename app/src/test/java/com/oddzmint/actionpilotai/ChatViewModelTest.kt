@@ -93,4 +93,13 @@ class ChatViewModelTest {
         assertEquals(" ",state.userInput)
         assertFalse(state.isLoading)
     }
+
+    @Test
+    fun `initial state is empty when using default view model constructor`(){
+        val viewModel = ChatViewModel()
+        val state = viewModel.uiState.value
+        assertTrue(state.message.isEmpty())
+        assertEquals("",state.userInput)
+        assertFalse(state.isLoading)
+    }
 }
