@@ -61,6 +61,16 @@ android {
         compose = true
         buildConfig = true
     }
+
+    // ADDED: stops AGP from interfering with Jacoco task wiring
+    testOptions {
+        unitTests.all {
+            it.extensions.configure(JacocoTaskExtension::class.java) {
+                isIncludeNoLocationClasses = true
+                excludes = listOf("jdk.internal.*")
+            }
+        }
+    }
 }
 
 kotlin {
@@ -118,25 +128,19 @@ tasks.register<JacocoReport>("jacocoTestReport") {
 
     val buildDir = layout.buildDirectory.get()
 
-    val kotlinClasses = fileTree("$buildDir/tmp/kotlin-classes/debug") {
-        exclude(fileFilter)
-    }
-    val javaClasses = fileTree("$buildDir/intermediates/javac/debug/classes") {
-        exclude(fileFilter)
-    }
-
-    classDirectories.setFrom(files(kotlinClasses, javaClasses))
-    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
-
-    // CHANGED: use doFirst to resolve the exec file path lazily, after the test task completes
-    doFirst {
-        executionData.setFrom(
-            fileTree(buildDir) {
-                include(
-                    "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
-                    "jacoco/testDebugUnitTest.exec"
-                )
-            }
+    classDirectories.setFrom(
+        files(
+            fileTree("$buildDir/tmp/kotlin-classes/debug") { exclude(fileFilter) },
+            fileTree("$buildDir/intermediates/javac/debug/classes") { exclude(fileFilter) }
         )
-    }
+    )
+    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
+    executionData.setFrom(
+        fileTree(buildDir) {
+            include(
+                "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+                "jacoco/testDebugUnitTest.exec"
+            )
+        }
+    )
 }
