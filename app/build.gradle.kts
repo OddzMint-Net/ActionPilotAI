@@ -4,7 +4,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
-    // REMOVED: id("jacoco") - conflicts with AGP 8.13.2
+    id("jacoco")
 }
 
 val localProps = Properties().apply {
@@ -38,9 +38,6 @@ android {
     }
 
     buildTypes {
-        debug {
-            enableUnitTestCoverage = true // AGP handles exec file generation
-        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
