@@ -13,8 +13,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ChatViewModel(
-    private val aiActionService: AIActionService = GeminiService()
+     aiActionService: AIActionService? = null
 ) : ViewModel() {
+    private val aiActionService: AIActionService = aiActionService ?: GeminiService()
+
 
     private val _uiState = MutableStateFlow(ChatUiState())
     val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()

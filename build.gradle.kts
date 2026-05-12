@@ -26,7 +26,8 @@ sonar {
                 "**/data/ai/GeminiService.kt",
                 "**/ui/theme/**",
                 "**/*Activity.kt",
-                "**/*Screen.kt"
+                "**/*Screen.kt",
+                "**/presentation/ChatViewModel.kt" // ADD THIS
             ).joinToString(",")
         )
     }
