@@ -13,14 +13,12 @@ sonar {
         property("sonar.host.url", "https://sonarcloud.io")
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
-            "$buildDir/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+            "app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
         )
-
         property(
             "sonar.androidLint.reportPaths",
-            "$buildDir/reports/lint-results-debug.xml"
+            "app/build/reports/lint-results-debug.xml"
         )
-
         property(
             "sonar.coverage.exclusions",
             listOf(
