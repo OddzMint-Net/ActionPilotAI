@@ -39,7 +39,7 @@ jobs:
       - name: Run tests, coverage, and Sonar analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: gradle testDebugUnitTest jacocoTestReport lintDebug sonar
+        run: ./gradlew clean testDebugUnitTest jacocoTestReport lintDebug sonar --info
 
       - name: Check Jacoco report
         run: |

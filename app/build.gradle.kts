@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
     id("jacoco")
+    id("org.sonarqube")
 }
 
 val localProps = Properties().apply {
