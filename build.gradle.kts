@@ -13,7 +13,7 @@ sonar {
         property("sonar.host.url", "https://sonarcloud.io")
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
-            "app/build/reports/coverage/unitTests/debug/report.xml" // AGP built-in coverage path
+            "app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
         )
         property(
             "sonar.androidLint.reportPaths",
