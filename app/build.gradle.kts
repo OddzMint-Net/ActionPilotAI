@@ -4,7 +4,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
-    // REMOVED: id("jacoco") - conflicts with AGP 8.x
+    // REMOVED: id("jacoco") - conflicts with AGP 8.13.2
 }
 
 val localProps = Properties().apply {
@@ -39,7 +39,7 @@ android {
 
     buildTypes {
         debug {
-            enableUnitTestCoverage = true
+            enableUnitTestCoverage = true // AGP handles exec file generation
         }
         release {
             isMinifyEnabled = true
@@ -92,44 +92,4 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     testImplementation(libs.json)
-}
-
-tasks.register<JacocoReport>("jacocoTestReport") {
-    group = "verification"
-    description = "Generates JaCoCo coverage reports for debug unit tests."
-
-    dependsOn("testDebugUnitTest")
-
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-    }
-
-    val fileFilter = listOf(
-        "**/R.class",
-        "**/R$*.class",
-        "**/BuildConfig.*",
-        "**/Manifest*.*",
-        "**/*Test*.*",
-        "**/*_Impl*.*",
-        "**/ComposableSingletons*.*"
-    )
-
-    val buildDir = layout.buildDirectory.get()
-
-    classDirectories.setFrom(
-        files(
-            fileTree("$buildDir/tmp/kotlin-classes/debug") { exclude(fileFilter) },
-            fileTree("$buildDir/intermediates/javac/debug/classes") { exclude(fileFilter) }
-        )
-    )
-    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
-    executionData.setFrom(
-        fileTree(buildDir) {
-            include(
-                "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
-                "jacoco/testDebugUnitTest.exec"
-            )
-        }
-    )
 }
