@@ -40,3 +40,12 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: gradle testDebugUnitTest jacocoTestReport lintDebug sonar
+
+      - name: Check Jacoco report
+        run: |
+         echo "=== Checking if exec file exists ==="
+         find app/build -name "*.exec" 2>/dev/null || echo "NO EXEC FILE FOUND"
+         echo "=== Checking if XML report exists ==="
+         find app/build -name "*.xml" -path "*/jacoco/*" 2>/dev/null || echo "NO XML FOUND"
+         echo "=== XML content if exists ==="
+         cat app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml 2>/dev/null || echo "FILE NOT FOUND"  
