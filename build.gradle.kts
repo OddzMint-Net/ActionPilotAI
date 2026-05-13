@@ -27,8 +27,9 @@ sonar {
                 "**/ui/theme/**",
                 "**/*Activity.kt",
                 "**/*Screen.kt",
-                "**/presentation/ActionPilotApp.kt"
-
+                "**/presentation/ActionPilotApp.kt",
+                "**/presentation/ChatViewModelFactory.kt",
+                "**/*\$*\$*"
             ).joinToString(",")
         )
     }

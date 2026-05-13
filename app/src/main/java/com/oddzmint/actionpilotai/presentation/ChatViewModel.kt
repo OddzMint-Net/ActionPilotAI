@@ -19,14 +19,6 @@ class ChatViewModel(
     private val aiActionService: AIActionService
 ) : ViewModel() {
 
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                ChatViewModel(aiActionService = GeminiService())
-            }
-        }
-    }
-
     private val _uiState = MutableStateFlow(ChatUiState())
     val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()
 
