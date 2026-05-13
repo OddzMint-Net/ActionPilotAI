@@ -101,6 +101,7 @@ tasks.withType<Test> {
 
 tasks.register<JacocoReport>("jacocoTestReport") {
     group = "verification"
+    description = "Generates JaCoCo XML and HTML coverage reports for debug unit tests."
     dependsOn("testDebugUnitTest")
 
     reports {
