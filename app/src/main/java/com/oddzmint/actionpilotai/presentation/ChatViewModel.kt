@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ChatViewModel(
-  private val aiActionService: AIActionService
+    private val aiActionService: AIActionService
 ) : ViewModel() {
 
     companion object {
