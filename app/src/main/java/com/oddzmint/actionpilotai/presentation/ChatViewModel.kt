@@ -1,7 +1,10 @@
 package com.oddzmint.actionpilotai.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.oddzmint.actionpilotai.data.ai.GeminiService
 import com.oddzmint.actionpilotai.data.model.ChatMessage
 import com.oddzmint.actionpilotai.domain.AIActionService
@@ -13,10 +16,16 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ChatViewModel(
-     aiActionService: AIActionService? = null
+  private val aiActionService: AIActionService
 ) : ViewModel() {
-    private val aiActionService: AIActionService = aiActionService ?: GeminiService()
 
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                ChatViewModel(aiActionService = GeminiService())
+            }
+        }
+    }
 
     private val _uiState = MutableStateFlow(ChatUiState())
     val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()

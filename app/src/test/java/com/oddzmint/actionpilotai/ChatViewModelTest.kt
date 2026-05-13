@@ -69,7 +69,9 @@ class ChatViewModelTest {
 
     @Test
     fun `initial state is empty`() {
-        val viewModel = ChatViewModel()
+        val viewModel = ChatViewModel(
+            aiActionService = FakeAIActionService()
+        )
         val state = viewModel.uiState.value
 
         assertEquals("", state.userInput)
