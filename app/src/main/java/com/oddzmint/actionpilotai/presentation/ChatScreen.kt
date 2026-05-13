@@ -22,21 +22,42 @@ import com.oddzmint.actionpilotai.domain.ActionExecutor
 import com.oddzmint.actionpilotai.presentation.components.ChatInputBar
 import com.oddzmint.actionpilotai.presentation.components.MessageBubble
 import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.oddzmint.actionpilotai.R
+import com.oddzmint.actionpilotai.domain.effect.ChatEffect
+import com.oddzmint.actionpilotai.domain.intents.ChatIntent
 @Composable
 fun ChatScreen(
     viewModel: ChatViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.effects.collect { effect ->
+            when (effect) {
+                is ChatEffect.ExecuteAction -> {
+                    ActionExecutor.execute(
+                        context = context,
+                        action = effect.action
+                    )
+                }
+            }
+        }
+    }
+
     Scaffold(
         bottomBar = {
             ChatInputBar(
                 value = uiState.userInput,
-                onValueChange = viewModel::onInputChange,
-                onSendClick = viewModel::onSendClick
+                onValueChange = {
+                    viewModel.onIntent(
+                        ChatIntent.InputChanged(it)
+                    )
+                },
+                onSendClick = { viewModel.onIntent(ChatIntent.SendClicked) }
             )
         }
     ) { paddingValues ->
@@ -62,12 +83,13 @@ fun ChatScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(uiState.message) { messages ->
-                    MessageBubble(message = messages, onConfirmAction = { action ->
-                        ActionExecutor.execute(
-                            context = context,
-                            action = action
-                        )
-                    })
+                    MessageBubble(
+                        message = messages,
+                        onConfirmAction = {
+                            viewModel.onIntent(
+                                ChatIntent.ConfirmAction(it)
+                            )
+                        })
                 }
                 if (uiState.isLoading) {
                     item {

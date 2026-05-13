@@ -1,6 +1,7 @@
 package com.oddzmint.actionpilotai
 
 import com.oddzmint.actionpilotai.domain.AIActionService
+import com.oddzmint.actionpilotai.domain.intents.ChatIntent
 import com.oddzmint.actionpilotai.presentation.ChatViewModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -33,7 +34,7 @@ class ChatViewModelTest {
         val viewModel = ChatViewModel(
             aiActionService = FakeAIActionService()
         )
-        viewModel.onInputChange("Create meeting tomorrow")
+        viewModel.onIntent(ChatIntent.InputChanged("Create meeting tomorrow"))
         assertEquals("Create meeting tomorrow", viewModel.uiState.value.userInput)
     }
 
@@ -43,8 +44,8 @@ class ChatViewModelTest {
             aiActionService = FakeAIActionService()
         )
 
-        viewModel.onInputChange("Schedule meeting tomorrow")
-        viewModel.onSendClick()
+        viewModel.onIntent(ChatIntent.InputChanged("Schedule meeting tomorrow"))
+        viewModel.onIntent(ChatIntent.SendClicked)
         val state = viewModel.uiState.value
         assertEquals("", state.userInput)
         assertEquals(2, state.message.size)
@@ -58,8 +59,8 @@ class ChatViewModelTest {
         val viewModel = ChatViewModel(
             aiActionService = FailingAIActionService()
         )
-        viewModel.onInputChange("Schedule meeting tomorrow")
-        viewModel.onSendClick()
+        viewModel.onIntent(ChatIntent.InputChanged("Schedule meeting tomorrow"))
+        viewModel.onIntent(ChatIntent.SendClicked)
         val state = viewModel.uiState.value
         assertEquals(false, state.isLoading)
         assertEquals(2, state.message.size)
@@ -85,9 +86,9 @@ class ChatViewModelTest {
             aiActionService = FakeAIActionService()
         )
 
-        viewModel.onInputChange(" ")
+        viewModel.onIntent(ChatIntent.InputChanged(" "))
 
-        viewModel.onSendClick()
+        viewModel.onIntent(ChatIntent.SendClicked)
 
         val state = viewModel.uiState.value
 
