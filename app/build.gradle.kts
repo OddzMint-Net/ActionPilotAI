@@ -111,7 +111,7 @@ tasks.register<JacocoReport>("jacocoTestReport") {
     val fileFilter = listOf(
         "**/R.class", "**/R$*.class", "**/BuildConfig.*",
         "**/Manifest*.*", "**/*Test*.*", "**/*_Impl*.*",
-        "**/ComposableSingletons*.*","**/*\$*\$*"
+        "**/ComposableSingletons*.*"
     )
 
     val buildDir = layout.buildDirectory.get()

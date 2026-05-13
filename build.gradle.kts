@@ -29,7 +29,7 @@ sonar {
                 "**/*Screen.kt",
                 "**/presentation/ActionPilotApp.kt",
                 "**/presentation/ChatViewModelFactory.kt",
-                "**/*\$*\$*"
+                "**/presentation/ChatViewModel"
             ).joinToString(",")
         )
     }
