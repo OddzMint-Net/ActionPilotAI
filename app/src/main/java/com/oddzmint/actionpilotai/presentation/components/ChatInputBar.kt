@@ -8,9 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.MicOff
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,8 +25,10 @@ import androidx.compose.material3.Text
 @Composable
 fun ChatInputBar(
     value: String,
+    isListening: Boolean,
     onValueChange: (String) -> Unit,
-    onSendClick: () -> Unit
+    onSendClick: () -> Unit,
+    onMicClick: () -> Unit
 ) {
     Surface(tonalElevation = 4.dp)
     {
@@ -42,8 +47,22 @@ fun ChatInputBar(
                 },
                 singleLine = true
             )
+            IconButton(onClick = onMicClick){
+                Icon(
+                    imageVector = if (isListening) Icons.Filled.MicOff
+                    else
+                        Icons.Filled.Mic,
+                    contentDescription = if (isListening) "Stop listening" else "Start voice input",
+                    tint = if (isListening)
+                        MaterialTheme.colorScheme.error
+                    else
+                        MaterialTheme.colorScheme.onSurface
+                )
+            }
+
             IconButton(
-                onClick = onSendClick
+                onClick = onSendClick,
+                enabled = value.isNotBlank() && !isListening
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.Send,

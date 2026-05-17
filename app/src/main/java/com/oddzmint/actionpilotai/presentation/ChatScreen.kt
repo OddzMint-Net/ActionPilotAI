@@ -13,51 +13,30 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.oddzmint.actionpilotai.domain.ActionExecutor
 import com.oddzmint.actionpilotai.presentation.components.ChatInputBar
 import com.oddzmint.actionpilotai.presentation.components.MessageBubble
 import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.oddzmint.actionpilotai.R
-import com.oddzmint.actionpilotai.domain.effect.ChatEffect
 import com.oddzmint.actionpilotai.domain.intents.ChatIntent
+
 @Composable
 fun ChatScreen(
-    viewModel: ChatViewModel
+    uiState: ChatUiState,
+    onIntent: (ChatIntent) -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    val context = LocalContext.current
-
-    LaunchedEffect(Unit) {
-        viewModel.effects.collect { effect ->
-            when (effect) {
-                is ChatEffect.ExecuteAction -> {
-                    ActionExecutor.execute(
-                        context = context,
-                        action = effect.action
-                    )
-                }
-            }
-        }
-    }
 
     Scaffold(
         bottomBar = {
             ChatInputBar(
                 value = uiState.userInput,
-                onValueChange = {
-                    viewModel.onIntent(
-                        ChatIntent.InputChanged(it)
-                    )
-                },
-                onSendClick = { viewModel.onIntent(ChatIntent.SendClicked) }
+                isListening = uiState.isListening,
+                onValueChange = { onIntent(ChatIntent.InputChanged(it)) },
+                onSendClick = { onIntent(ChatIntent.SendClicked) },
+                onMicClick = { onIntent(ChatIntent.VoiceInputStarted) }
             )
         }
     ) { paddingValues ->
@@ -86,7 +65,7 @@ fun ChatScreen(
                     MessageBubble(
                         message = messages,
                         onConfirmAction = {
-                            viewModel.onIntent(
+                            onIntent(
                                 ChatIntent.ConfirmAction(it)
                             )
                         })
@@ -95,6 +74,25 @@ fun ChatScreen(
                     item {
                         CircularProgressIndicator(
                             modifier = Modifier.size(28.dp)
+                        )
+                    }
+                }
+
+                if (uiState.isListening) {
+                    item {
+                        Text(
+                            text = "Listening...",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+                uiState.error?.let {
+                    item {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error
                         )
                     }
                 }
