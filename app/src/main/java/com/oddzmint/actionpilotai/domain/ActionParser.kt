@@ -1,7 +1,7 @@
 package com.oddzmint.actionpilotai.domain
 
-import com.oddzmint.actionpilotai.data.model.AIAction
-import com.oddzmint.actionpilotai.data.model.ActionType
+import com.oddzmint.actionpilotai.domain.model.AIAction
+import com.oddzmint.actionpilotai.domain.model.ActionType
 import org.json.JSONObject
 
 object ActionParser {

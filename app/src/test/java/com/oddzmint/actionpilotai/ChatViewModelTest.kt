@@ -1,7 +1,10 @@
 package com.oddzmint.actionpilotai
 
-import com.oddzmint.actionpilotai.domain.AIActionService
-import com.oddzmint.actionpilotai.domain.intents.ChatIntent
+import com.oddzmint.actionpilotai.domain.model.AIAction
+import com.oddzmint.actionpilotai.domain.model.ActionType
+import com.oddzmint.actionpilotai.domain.repository.AIActionRepository
+import com.oddzmint.actionpilotai.domain.usecase.GetAiActionUseCase
+import com.oddzmint.actionpilotai.presentation.ChatIntent
 import com.oddzmint.actionpilotai.presentation.ChatViewModel
 import com.oddzmint.actionpilotai.presentation.ChatViewModel.Companion.ERROR_MESSAGE
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -16,25 +19,35 @@ class ChatViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private class FakeAIActionService : AIActionService {
-        override suspend fun getAction(userInput: String): String {
-            return """
-                {
-                "type":"CREATE_EVENT",
-                "data": {
-                "title":"Team meeting",
-                "date":"2026-05-10",
-                "time":"08:30"
-                }
-               }
-            """.trimIndent()
+    private class FakeGetAiActionUseCase : GetAiActionUseCase(
+        repository = object : AIActionRepository {
+
+            override suspend fun getAction(userInput: String): AIAction {
+                return AIAction(
+                    type = ActionType.CREATE_EVENT,
+                    data = mapOf(
+                        "title" to "Team meeting",
+                        "date" to "2026-05-10",
+                        "time" to "08:30"
+                    )
+                )
+            }
         }
-    }
+    )
+
+    private class FailingGetAiActionUseCase : GetAiActionUseCase(
+        repository = object : AIActionRepository {
+            override suspend fun getAction(userInput: String): AIAction {
+                throw Exception("Service failed")
+            }
+        }
+    )
+
 
     @Test
     fun `onInputChange updates user input`() {
         val viewModel = ChatViewModel(
-            aiActionService = FakeAIActionService()
+            getAiActionUseCase = FakeGetAiActionUseCase()
         )
         viewModel.onIntent(ChatIntent.InputChanged("Create meeting tomorrow"))
         assertEquals("Create meeting tomorrow", viewModel.uiState.value.userInput)
@@ -43,7 +56,7 @@ class ChatViewModelTest {
     @Test
     fun `onSendClick adds user message and clears input`() = runTest {
         val viewModel = ChatViewModel(
-            aiActionService = FakeAIActionService()
+            getAiActionUseCase = FakeGetAiActionUseCase()
         )
 
         viewModel.onIntent(ChatIntent.InputChanged("Schedule meeting tomorrow"))
@@ -60,7 +73,7 @@ class ChatViewModelTest {
     @Test
     fun `onSendClick shows error message when service fails`() = runTest {
         val viewModel = ChatViewModel(
-            aiActionService = FailingAIActionService()
+            getAiActionUseCase = FailingGetAiActionUseCase()
         )
         viewModel.onIntent(ChatIntent.InputChanged("Schedule meeting tomorrow"))
         viewModel.onIntent(ChatIntent.SendClicked)
@@ -75,7 +88,7 @@ class ChatViewModelTest {
     @Test
     fun `initial state is empty`() {
         val viewModel = ChatViewModel(
-            aiActionService = FakeAIActionService()
+            getAiActionUseCase = FakeGetAiActionUseCase()
         )
         val state = viewModel.uiState.value
 
@@ -87,7 +100,7 @@ class ChatViewModelTest {
     @Test
     fun `onSendClick does nothing when input is blank`() = runTest {
         val viewModel = ChatViewModel(
-            aiActionService = FakeAIActionService()
+            getAiActionUseCase = FakeGetAiActionUseCase()
         )
 
         viewModel.onIntent(ChatIntent.InputChanged(" "))
@@ -97,16 +110,16 @@ class ChatViewModelTest {
         val state = viewModel.uiState.value
 
         assertTrue(state.message.isEmpty())
-        assertEquals(" ",state.userInput)
+        assertEquals(" ", state.userInput)
         assertFalse(state.isLoading)
     }
 
     @Test
-    fun `initial state is empty when using default view model constructor`(){
-        val viewModel = ChatViewModel(aiActionService = FakeAIActionService())
+    fun `initial state is empty when using default view model constructor`() {
+        val viewModel = ChatViewModel(getAiActionUseCase = FakeGetAiActionUseCase())
         val state = viewModel.uiState.value
         assertTrue(state.message.isEmpty())
-        assertEquals("",state.userInput)
+        assertEquals("", state.userInput)
         assertFalse(state.isLoading)
     }
 }

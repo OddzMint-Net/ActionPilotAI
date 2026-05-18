@@ -1,6 +1,6 @@
 package com.oddzmint.actionpilotai
 
-import com.oddzmint.actionpilotai.data.model.ActionType
+import com.oddzmint.actionpilotai.domain.model.ActionType
 import com.oddzmint.actionpilotai.domain.ActionParser
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

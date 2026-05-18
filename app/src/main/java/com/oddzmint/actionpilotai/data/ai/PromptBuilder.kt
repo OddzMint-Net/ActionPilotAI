@@ -1,4 +1,4 @@
-package com.oddzmint.actionpilotai.data.model
+package com.oddzmint.actionpilotai.data.ai
 
 object PromptBuilder {
     fun buildPrompt(userInput: String): String {

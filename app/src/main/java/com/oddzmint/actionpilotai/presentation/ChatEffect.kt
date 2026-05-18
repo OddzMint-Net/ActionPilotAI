@@ -1,6 +1,6 @@
-package com.oddzmint.actionpilotai.domain.effect
+package com.oddzmint.actionpilotai.presentation
 
-import com.oddzmint.actionpilotai.data.model.AIAction
+import com.oddzmint.actionpilotai.domain.model.AIAction
 
 sealed interface ChatEffect {
     data class ExecuteAction(val action: AIAction) : ChatEffect

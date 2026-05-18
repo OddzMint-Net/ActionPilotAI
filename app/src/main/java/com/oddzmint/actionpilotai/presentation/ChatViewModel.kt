@@ -1,25 +1,19 @@
 package com.oddzmint.actionpilotai.presentation
 
-import androidx.compose.runtime.snapshots.Snapshot
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.oddzmint.actionpilotai.data.model.ChatMessage
-import com.oddzmint.actionpilotai.domain.AIActionService
+import com.oddzmint.actionpilotai.data.ai.AIActionService
 import com.oddzmint.actionpilotai.domain.ActionParser
-import com.oddzmint.actionpilotai.domain.effect.ChatEffect
-import com.oddzmint.actionpilotai.domain.intents.ChatIntent
+import com.oddzmint.actionpilotai.domain.usecase.GetAiActionUseCase
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ChatViewModel(
-    private val aiActionService: AIActionService
+    private val getAiActionUseCase: GetAiActionUseCase
 ) : ViewModel() {
 
     companion object {
@@ -141,8 +135,7 @@ class ChatViewModel(
 
     private suspend fun callAiService(input: String) {
         try {
-            val aiResponse = aiActionService.getAction(input)
-            val action = ActionParser.parse(aiResponse)
+            val action = getAiActionUseCase(input)
             onIntent(ChatIntent.AiResponseReceived(action))
         } catch (e: Exception) {
             onIntent(ChatIntent.AiErrorOccurred(ERROR_MESSAGE))

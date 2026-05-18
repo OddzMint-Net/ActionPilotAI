@@ -1,11 +1,9 @@
 package com.oddzmint.actionpilotai.data.ai
 
 
-import com.oddzmint.actionpilotai.data.model.PromptBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.oddzmint.actionpilotai.BuildConfig
-import com.oddzmint.actionpilotai.domain.AIActionService
 import kotlinx.coroutines.CoroutineDispatcher
 import org.json.JSONArray
 import org.json.JSONObject

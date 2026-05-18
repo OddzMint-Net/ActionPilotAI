@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.oddzmint.actionpilotai.R
-import com.oddzmint.actionpilotai.domain.intents.ChatIntent
 
 @Composable
 fun ChatScreen(

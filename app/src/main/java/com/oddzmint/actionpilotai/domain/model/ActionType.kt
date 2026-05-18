@@ -1,4 +1,4 @@
-package com.oddzmint.actionpilotai.data.model
+package com.oddzmint.actionpilotai.domain.model
 
 enum class ActionType {
     CREATE_EVENT,

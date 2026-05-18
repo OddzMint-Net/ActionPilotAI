@@ -1,6 +1,6 @@
-package com.oddzmint.actionpilotai.domain.intents
+package com.oddzmint.actionpilotai.presentation
 
-import com.oddzmint.actionpilotai.data.model.AIAction
+import com.oddzmint.actionpilotai.domain.model.AIAction
 
 sealed interface ChatIntent {
     data class InputChanged(
