@@ -161,6 +161,4 @@ class ActionParserTest {
         assertEquals(ActionType.DIAL_PHONE,result.type)
         assertEquals("0123456789",result.data["phone"])
     }
-
-
 }

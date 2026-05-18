@@ -3,6 +3,8 @@ package com.oddzmint.actionpilotai
 import com.oddzmint.actionpilotai.domain.AIActionService
 import com.oddzmint.actionpilotai.domain.intents.ChatIntent
 import com.oddzmint.actionpilotai.presentation.ChatViewModel
+import com.oddzmint.actionpilotai.presentation.ChatViewModel.Companion.ERROR_MESSAGE
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -45,6 +47,7 @@ class ChatViewModelTest {
         )
 
         viewModel.onIntent(ChatIntent.InputChanged("Schedule meeting tomorrow"))
+        advanceUntilIdle()
         viewModel.onIntent(ChatIntent.SendClicked)
         val state = viewModel.uiState.value
         assertEquals("", state.userInput)
@@ -61,10 +64,11 @@ class ChatViewModelTest {
         )
         viewModel.onIntent(ChatIntent.InputChanged("Schedule meeting tomorrow"))
         viewModel.onIntent(ChatIntent.SendClicked)
+        advanceUntilIdle()
         val state = viewModel.uiState.value
         assertEquals(false, state.isLoading)
         assertEquals(2, state.message.size)
-        assertEquals("Something went wrong. Please try again.", state.message.last().text)
+        assertEquals(ERROR_MESSAGE, state.message.last().text)
         assertFalse(state.message.last().isFromUser)
     }
 

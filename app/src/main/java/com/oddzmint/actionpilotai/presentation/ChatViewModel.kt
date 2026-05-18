@@ -22,6 +22,10 @@ class ChatViewModel(
     private val aiActionService: AIActionService
 ) : ViewModel() {
 
+    companion object {
+        const val ERROR_MESSAGE = "Something went wrong. Please try again."
+    }
+
     // --State--
     private val _uiState = MutableStateFlow(ChatUiState())
     val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()
@@ -36,7 +40,7 @@ class ChatViewModel(
             is ChatIntent.SendClicked -> _uiState.value.userInput.trim()
             is ChatIntent.VoiceInputReceived -> intent.text.trim()
             else -> null
-            }
+        }
 
         _uiState.value = reduce(_uiState.value, intent)
         handleEffect(intent, inputSnapshot)
@@ -51,6 +55,7 @@ class ChatViewModel(
             )
 
             is ChatIntent.SendClicked -> {
+                if (current.userInput.isBlank()) return current
                 val userMessage = ChatMessage(
                     text = current.userInput.trim(),
                     isFromUser = true
@@ -96,7 +101,7 @@ class ChatViewModel(
 
             is ChatIntent.AiErrorOccurred -> current.copy(
                 message = current.message + ChatMessage(
-                    text = "Something went wrong. Please try again",
+                    text = ERROR_MESSAGE,
                     isFromUser = false
                 ),
                 isLoading = false,
@@ -129,6 +134,7 @@ class ChatViewModel(
                     _effects.send(ChatEffect.ExecuteAction(intent.action))
                 }
             }
+
             else -> Unit
         }
     }
@@ -139,55 +145,7 @@ class ChatViewModel(
             val action = ActionParser.parse(aiResponse)
             onIntent(ChatIntent.AiResponseReceived(action))
         } catch (e: Exception) {
-            onIntent(ChatIntent.AiErrorOccurred("Something went wrong. Please try again later"))
+            onIntent(ChatIntent.AiErrorOccurred(ERROR_MESSAGE))
         }
     }
 }
-
-
-//    private fun sendPrompt() {
-//        val input = _uiState.value.userInput.trim()
-//        if (input.isBlank()) return
-//        val userMessage = ChatMessage(
-//            text = input,
-//            isFromUser = true
-//        )
-//
-//        _uiState.update {
-//            it.copy(
-//                message = it.message + userMessage,
-//                userInput = "",
-//                isLoading = true
-//            )
-//        }
-//
-//        viewModelScope.launch {
-//            try {
-//                val aiResponse = aiActionService.getAction(input)
-//                val action = ActionParser.parse(aiResponse)
-//                val aiMessage = ChatMessage(
-//                    text = "I found an action for you",
-//                    isFromUser = false,
-//                    action = action
-//                )
-//                _uiState.update {
-//                    it.copy(
-//                        message = it.message + aiMessage,
-//                        isLoading = false
-//                    )
-//                }
-//            } catch (e: Exception) {
-//                val errorMessage = ChatMessage(
-//                    text = "Something went wrong. Please try again.",
-//                    isFromUser = false
-//                )
-//                _uiState.update {
-//                    it.copy(
-//                        message = it.message + errorMessage,
-//                        isLoading = false
-//                    )
-//                }
-//            }
-//        }
-//    }
-//}
