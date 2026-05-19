@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
+    implementation(libs.compose.material.icons)
 
 // Testing
     testImplementation(libs.junit)
@@ -93,8 +94,8 @@ dependencies {
     androidTestImplementation(libs.compose.ui.test.junit4)
 
     //Debug
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.test.manifest)
 }
 
 tasks.withType<Test> {
