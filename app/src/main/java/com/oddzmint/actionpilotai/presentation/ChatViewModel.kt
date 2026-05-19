@@ -107,7 +107,8 @@ class ChatViewModel(
 
     private fun handleEffect(intent: ChatIntent, inputSnapshot: String? = null) {
         when (intent) {
-            is ChatIntent.SendClicked -> {
+            is ChatIntent.SendClicked,
+            is ChatIntent.VoiceInputReceived -> {
                 if (inputSnapshot.isNullOrBlank()) return
                 viewModelScope.launch { callAiService(inputSnapshot) }
             }
@@ -116,11 +117,6 @@ class ChatViewModel(
                 viewModelScope.launch {
                     _effects.send(ChatEffect.LaunchVoiceInput)
                 }
-            }
-
-            is ChatIntent.VoiceInputReceived -> {
-                if (inputSnapshot.isNullOrBlank()) return
-                viewModelScope.launch { callAiService(inputSnapshot) }
             }
 
             is ChatIntent.ConfirmAction -> {
