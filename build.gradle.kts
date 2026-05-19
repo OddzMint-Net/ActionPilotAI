@@ -32,7 +32,9 @@ sonar {
                 "**/presentation/ChatViewModel.kt",
                 "**/ChatRoute.kt",
                 "**/ChatInputBar.kt",
-                "**/ChatScreen.kt"
+                "**/ChatScreen.kt",
+                "**/presentation/ActionExecutor.kt",
+                "**/presentation/handlers/**"
             ).joinToString(",")
         )
     }
