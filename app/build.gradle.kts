@@ -93,9 +93,8 @@ dependencies {
     androidTestImplementation(libs.compose.ui.test.junit4)
 
     //Debug
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation("androidx.compose.material:material-icons-extended")
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.test.manifest)
 }
 
 tasks.withType<Test> {
