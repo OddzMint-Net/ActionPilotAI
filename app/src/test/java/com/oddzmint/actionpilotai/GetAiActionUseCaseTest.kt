@@ -17,6 +17,7 @@ class GetAiActionUseCaseTest {
                 data = mapOf("location" to "Johannesburg")
             )
         }
+
         val useCase = GetAiActionUseCase(fakeRepository)
         val result = useCase("Take me to Johannesburg")
         assertEquals(ActionType.OPEN_MAPS, result.type)
