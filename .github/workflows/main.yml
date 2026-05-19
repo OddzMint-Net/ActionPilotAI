@@ -36,16 +36,19 @@ jobs:
         run: |
           echo "ACTIONPILOT_GEMINI_API_KEY=$ACTIONPILOT_GEMINI_API_KEY" > local.properties
 
-      - name: Run tests, coverage, and Sonar analysis
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew clean test jacocoTestReport lintDebug sonar --info
+      - name: Run tests and coverage
+        run: ./gradlew clean test jacocoTestReport lintDebug --info
 
       - name: Check Jacoco report
         run: |
-         echo "=== Checking if exec file exists ==="
-         find app/build -name "*.exec" 2>/dev/null || echo "NO EXEC FILE FOUND"
-         echo "=== Checking if XML report exists ==="
-         find app/build -name "*.xml" -path "*/jacoco/*" 2>/dev/null || echo "NO XML FOUND"
-         echo "=== XML content if exists ==="
-         cat app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml 2>/dev/null || echo "FILE NOT FOUND"  
+          echo "=== Checking if exec file exists ==="
+          find app/build -name "*.exec" 2>/dev/null || echo "NO EXEC FILE FOUND"
+          echo "=== Checking if XML report exists ==="
+          find app/build -name "*.xml" -path "*/jacoco/*" 2>/dev/null || echo "NO XML FOUND"
+          echo "=== XML content if exists ==="
+          cat app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml 2>/dev/null || echo "FILE NOT FOUND"
+
+      - name: Run Sonar analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew sonar --info
