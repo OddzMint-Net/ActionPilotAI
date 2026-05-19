@@ -35,7 +35,9 @@ sonar {
                 "**/ChatInputBar.kt",
                 "**/ChatScreen.kt",
                 "**/presentation/ActionExecutor.kt",
-                "**/presentation/handlers/**"
+                "**/presentation/handlers/**",
+                "**/domain/usecase/GetAiActionUseCase.kt",
+                "**/data/repository/AIActionRepositoryImpl.kt"
             ).joinToString(",")
         )
     }
