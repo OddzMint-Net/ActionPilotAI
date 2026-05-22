@@ -11,8 +11,8 @@ import org.junit.Test
 class GetAiActionUseCaseTest {
     @Test
     fun `invoke returns action from repository`() = runTest {
-        val fakeRepository = object : AIActionRepository {
-            override suspend fun getAction(userInput: String) = AIAction(
+        val fakeRepository = AIActionRepository {
+            AIAction(
                 type = ActionType.OPEN_MAPS,
                 data = mapOf("location" to "Johannesburg")
             )
