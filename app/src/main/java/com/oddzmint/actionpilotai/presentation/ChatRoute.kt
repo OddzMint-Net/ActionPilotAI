@@ -10,6 +10,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.oddzmint.actionpilotai.domain.action.ActionExecutor
+import com.oddzmint.actionpilotai.presentation.chat.effect.ChatEffect
+import com.oddzmint.actionpilotai.presentation.chat.intent.ChatIntent
+import com.oddzmint.actionpilotai.presentation.chat.ui.ChatScreen
+import com.oddzmint.actionpilotai.presentation.chat.viewmodel.ChatViewModel
+import com.oddzmint.actionpilotai.presentation.chat.viewmodel.ChatViewModelFactory
 
 @Composable
 fun ChatRoute(
@@ -23,9 +29,9 @@ fun ChatRoute(
     ) { result ->
         val text = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()
         if (text != null) {
-            viewModel.onIntent(ChatIntent.VoiceInputReceived(text))
+            viewModel.onIntent(ChatIntent.SubmitVoiceInput(text))
         } else {
-            viewModel.onIntent(ChatIntent.VoiceInputFailed)
+            viewModel.onIntent(ChatIntent.VoiceRecognitionFailed)
         }
     }
 

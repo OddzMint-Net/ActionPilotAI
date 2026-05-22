@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.oddzmint.actionpilotai.R
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.domain.model.ActionType
+import com.oddzmint.actionpilotai.domain.action.ActionType
 
 @Composable
 fun ActionCard(

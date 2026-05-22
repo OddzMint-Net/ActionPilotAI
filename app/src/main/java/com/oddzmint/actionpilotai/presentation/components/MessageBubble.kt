@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.presentation.ChatMessage
+import com.oddzmint.actionpilotai.presentation.chat.model.ChatMessage
 
 @Composable
 fun MessageBubble(

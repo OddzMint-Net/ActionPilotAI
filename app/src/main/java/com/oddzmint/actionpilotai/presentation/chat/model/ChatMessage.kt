@@ -1,4 +1,4 @@
-package com.oddzmint.actionpilotai.presentation
+package com.oddzmint.actionpilotai.presentation.chat.model
 
 import com.oddzmint.actionpilotai.domain.model.AIAction
 

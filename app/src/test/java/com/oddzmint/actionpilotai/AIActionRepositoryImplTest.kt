@@ -2,7 +2,7 @@ package com.oddzmint.actionpilotai
 
 import com.oddzmint.actionpilotai.data.ai.AIActionService
 import com.oddzmint.actionpilotai.data.repository.AIActionRepositoryImpl
-import com.oddzmint.actionpilotai.domain.model.ActionType
+import com.oddzmint.actionpilotai.domain.action.ActionType
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

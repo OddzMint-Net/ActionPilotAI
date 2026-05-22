@@ -1,4 +1,4 @@
-package com.oddzmint.actionpilotai.presentation
+package com.oddzmint.actionpilotai.presentation.chat.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +21,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.oddzmint.actionpilotai.R
+import com.oddzmint.actionpilotai.presentation.chat.intent.ChatIntent
+import com.oddzmint.actionpilotai.presentation.chat.state.ChatUiState
 
 @Composable
 fun ChatScreen(
@@ -33,9 +35,9 @@ fun ChatScreen(
             ChatInputBar(
                 value = uiState.userInput,
                 isListening = uiState.isListening,
-                onValueChange = { onIntent(ChatIntent.InputChanged(it)) },
-                onSendClick = { onIntent(ChatIntent.SendClicked) },
-                onMicClick = { onIntent(ChatIntent.VoiceInputStarted) }
+                onValueChange = { onIntent(ChatIntent.UpdateInput(it)) },
+                onSendClick = { onIntent(ChatIntent.SendMessage) },
+                onMicClick = { onIntent(ChatIntent.StartVoiceInput) }
             )
         }
     ) { paddingValues ->

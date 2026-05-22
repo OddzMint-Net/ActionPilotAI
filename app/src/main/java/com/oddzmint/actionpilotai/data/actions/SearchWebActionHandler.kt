@@ -1,4 +1,4 @@
-package com.oddzmint.actionpilotai.presentation.handlers
+package com.oddzmint.actionpilotai.data.actions
 
 import android.content.Context
 import android.content.Intent
@@ -6,8 +6,8 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.core.net.toUri
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.domain.model.ActionType
-import com.oddzmint.actionpilotai.presentation.ActionHandler
+import com.oddzmint.actionpilotai.domain.action.ActionType
+import com.oddzmint.actionpilotai.domain.action.ActionHandler
 
 class SearchWebActionHandler() : ActionHandler {
 

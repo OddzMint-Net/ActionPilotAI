@@ -1,8 +1,7 @@
-package com.oddzmint.actionpilotai.presentation
+package com.oddzmint.actionpilotai.domain.action
 
 import android.content.Context
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.domain.model.ActionType
 
 interface ActionHandler {
     val type: ActionType
