@@ -58,6 +58,11 @@ android {
         compose = true
         buildConfig = true
     }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
+
 }
 
 kotlin {

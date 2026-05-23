@@ -17,9 +17,14 @@ class GenerateReplyActionHandler() : ActionHandler {
         action: AIAction
     ) {
         val message = action.data["message"].orEmpty()
+        if (message.isBlank()) {
+            Toast.makeText(context, "No reply generated", Toast.LENGTH_SHORT).show()
+            return
+        }
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("ActionPilotAI Reply", message)
         clipboard.setPrimaryClip(clip)
         Toast.makeText(context, "Reply copied", Toast.LENGTH_SHORT).show()
+        return
     }
 }

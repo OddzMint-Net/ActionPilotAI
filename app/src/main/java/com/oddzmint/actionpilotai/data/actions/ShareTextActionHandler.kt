@@ -23,7 +23,7 @@ class ShareTextActionHandler() : ActionHandler {
 
         val sendIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_INTENT, text)
+            putExtra(Intent.EXTRA_TEXT,text)
         }
 
         val chooser = Intent.createChooser(sendIntent, "Share with")
