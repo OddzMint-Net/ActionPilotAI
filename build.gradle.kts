@@ -14,29 +14,35 @@ sonar {
         property("sonar.newCode.referenceBranch", "main")
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
-            "app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+            "${rootDir}/app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
         )
         property(
             "sonar.androidLint.reportPaths",
-            "app/build/reports/lint-results-debug.xml"
+            "${rootDir}/app/build/reports/lint-results-debug.xml"
         )
         property(
             "sonar.coverage.exclusions",
             listOf(
-                "**/domain/handlers/**",
                 "**/data/ai/GeminiService.kt",
                 "**/ui/theme/**",
                 "**/*Activity.kt",
-                "**/*Screen.kt",
+                "**/presentation/chat/components/**",
+                "**/presentation/chat/viewmodel/ChatViewModelFactory.kt",
                 "**/presentation/ActionPilotApp.kt",
-                "**/presentation/ChatViewModelFactory.kt",
-                "**/ChatRoute.kt",
-                "**/ChatInputBar.kt",
-                "**/ChatScreen.kt",
-                "**/presentation/ActionExecutor.kt",
+                "**/presentation/ChatRoute.kt",
                 "**/domain/usecase/GetAiActionUseCase.kt",
-                "**/data/repository/AIActionRepositoryImpl.kt"
+                "**/domain/action/ActionExecutor.kt",
+                "**/domain/action/ActionHandler.kt",
+                "**/domain/action/ActionType.kt",
+                "**/data/repository/AIActionRepositoryImpl.kt",
+                "**/presentation/chat/effect/ChatEffect.kt",
+                "**/presentation/chat/ui/**"
             ).joinToString(",")
         )
     }
+}
+
+tasks.named("sonar") {
+    dependsOn(":app:lintDebug")
+    dependsOn(":app:jacocoTestReport")
 }

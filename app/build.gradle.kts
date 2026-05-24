@@ -19,6 +19,10 @@ fun prop(key: String): String =
     localProps.getProperty(key) ?: error("Missing property: $key in local.properties")
 
 android {
+    lint {
+        xmlReport = true
+        htmlReport = true
+    }
     namespace = "com.oddzmint.actionpilotai"
     compileSdk = 36
 
