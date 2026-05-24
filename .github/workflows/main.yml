@@ -37,7 +37,7 @@ jobs:
           echo "ACTIONPILOT_GEMINI_API_KEY=$ACTIONPILOT_GEMINI_API_KEY" > local.properties
 
       - name: Run tests and coverage
-        run: ./gradlew clean test jacocoTestReport lintDebug --info
+        run: ./gradlew clean lintDebug testDebugUnitTest jacocoTestReport --info
 
       - name: Check Jacoco report
         run: |
@@ -51,4 +51,4 @@ jobs:
       - name: Run Sonar analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonar -Dsonar.coverage.jacoco.xmlReportPaths=app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml --info
+        run: ./gradlew sonar --info
