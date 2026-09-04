@@ -106,7 +106,7 @@ class ChatReducerTest {
         )
         val result = reducer(
             state,
-            ChatResult.AiSuccess(action)
+            ChatResult.AiSuccess(action, true)
         )
         assertFalse(result.isLoading)
         assertEquals(1, result.message.size)
