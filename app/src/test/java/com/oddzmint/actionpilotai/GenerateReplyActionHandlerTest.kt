@@ -3,8 +3,7 @@ package com.oddzmint.actionpilotai
 import android.content.ClipboardManager
 import android.content.Context
 import com.oddzmint.actionpilotai.data.actions.GenerateReplyActionHandler
-import com.oddzmint.actionpilotai.domain.action.ActionType
-import android.content.ClipData
+import com.oddzmint.actionpilotai.domain.model.ActionType
 import com.oddzmint.actionpilotai.domain.model.AIAction
 import io.mockk.every
 import io.mockk.mockk

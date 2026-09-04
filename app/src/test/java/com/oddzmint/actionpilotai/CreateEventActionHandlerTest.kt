@@ -1,9 +1,8 @@
 package com.oddzmint.actionpilotai
 
 import android.content.Context
-import androidx.compose.ui.text.font.createFontFamilyResolver
 import com.oddzmint.actionpilotai.data.actions.CreateEventActionHandler
-import com.oddzmint.actionpilotai.domain.action.ActionType
+import com.oddzmint.actionpilotai.domain.model.ActionType
 import com.oddzmint.actionpilotai.domain.model.AIAction
 import io.mockk.mockk
 import io.mockk.verify

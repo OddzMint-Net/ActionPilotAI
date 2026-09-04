@@ -1,13 +1,14 @@
-package com.oddzmint.actionpilotai.presentation.chat.viewmodel
+package com.oddzmint.actionpilotai.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.oddzmint.actionpilotai.domain.usecase.GetAiActionUseCase
-import com.oddzmint.actionpilotai.presentation.chat.effect.ChatEffect
-import com.oddzmint.actionpilotai.presentation.chat.intent.ChatIntent
-import com.oddzmint.actionpilotai.presentation.chat.reducer.ChatReducer
-import com.oddzmint.actionpilotai.presentation.chat.results.ChatResult
-import com.oddzmint.actionpilotai.presentation.chat.state.ChatUiState
+import com.oddzmint.actionpilotai.domain.GetAiActionUseCase
+import com.oddzmint.actionpilotai.domain.extensions.requiresConfirmation
+import com.oddzmint.actionpilotai.presentation.chat.ChatEffect
+import com.oddzmint.actionpilotai.presentation.chat.ChatIntent
+import com.oddzmint.actionpilotai.presentation.chat.ChatReducer
+import com.oddzmint.actionpilotai.presentation.chat.ChatResult
+import com.oddzmint.actionpilotai.presentation.chat.ChatUiState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -71,7 +72,17 @@ class ChatViewModel(
     private suspend fun callAiService(input: String) {
         try {
             val action = getAiActionUseCase(input)
-            applyResult(ChatResult.AiSuccess(action))
+            val requiresConfirmation = action.type.requiresConfirmation()
+
+            if (!requiresConfirmation) {
+                _effects.send(ChatEffect.ExecuteAction(action))
+            }
+            applyResult(
+                ChatResult.AiSuccess(
+                    action = action,
+                    requiresConfirmation = requiresConfirmation
+                )
+            )
         } catch (e: Exception) {
             applyResult(ChatResult.AiFailure(ERROR_MESSAGE))
         }

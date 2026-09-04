@@ -1,10 +1,6 @@
-package com.oddzmint.actionpilotai.presentation.chat.reducer
+package com.oddzmint.actionpilotai.presentation.chat
 
-import com.oddzmint.actionpilotai.presentation.chat.intent.ChatIntent
-import com.oddzmint.actionpilotai.presentation.chat.model.ChatMessage
-import com.oddzmint.actionpilotai.presentation.chat.results.ChatResult
-import com.oddzmint.actionpilotai.presentation.chat.state.ChatUiState
-import com.oddzmint.actionpilotai.presentation.chat.viewmodel.ChatViewModel.Companion.ERROR_MESSAGE
+import com.oddzmint.actionpilotai.presentation.ChatViewModel
 
 class ChatReducer {
 
@@ -63,21 +59,32 @@ class ChatReducer {
     ): ChatUiState {
 
         return when (result) {
-            is ChatResult.AiSuccess -> current.copy(
-                message = current.message + ChatMessage(
-                    text = "I found an action for you",
-                    isFromUser = false,
-                    action = result.action
-                ),
-                isLoading = false
-            )
+
+            is ChatResult.AiSuccess -> {
+                val assistantMessage = if (result.requiresConfirmation) {
+                    ChatMessage(
+                        text = "I found an action for you",
+                        isFromUser = false,
+                        action = result.action
+                    )
+                } else {
+                    ChatMessage(
+                        text = "Executing action...",
+                        isFromUser = false
+                    )
+                }
+                current.copy(
+                    message = current.message + assistantMessage,
+                    isLoading = false
+                )
+            }
 
             is ChatResult.AiFailure -> current.copy(
                 message = current.message + ChatMessage(
-                    text = ERROR_MESSAGE,
+                    text = ChatViewModel.ERROR_MESSAGE,
                     isFromUser = false
                 ),
-                isLoading = false,
+                isLoading = false
             )
         }
     }

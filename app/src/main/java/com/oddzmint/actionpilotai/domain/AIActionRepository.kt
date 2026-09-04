@@ -1,4 +1,4 @@
-package com.oddzmint.actionpilotai.domain.repository
+package com.oddzmint.actionpilotai.domain
 
 import com.oddzmint.actionpilotai.domain.model.AIAction
 

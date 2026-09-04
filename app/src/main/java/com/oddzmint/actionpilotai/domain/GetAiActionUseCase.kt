@@ -1,7 +1,6 @@
-package com.oddzmint.actionpilotai.domain.usecase
+package com.oddzmint.actionpilotai.domain
 
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.domain.repository.AIActionRepository
 
 open class GetAiActionUseCase(
     private val repository: AIActionRepository

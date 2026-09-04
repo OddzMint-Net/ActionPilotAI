@@ -1,4 +1,4 @@
-package com.oddzmint.actionpilotai.presentation.chat.ui
+package com.oddzmint.actionpilotai.presentation.chat
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,8 +21,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.oddzmint.actionpilotai.R
-import com.oddzmint.actionpilotai.presentation.chat.intent.ChatIntent
-import com.oddzmint.actionpilotai.presentation.chat.state.ChatUiState
 
 @Composable
 fun ChatScreen(

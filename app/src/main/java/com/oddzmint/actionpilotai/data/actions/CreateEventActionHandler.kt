@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.domain.action.ActionType
-import com.oddzmint.actionpilotai.domain.action.ActionHandler
+import com.oddzmint.actionpilotai.domain.model.ActionType
+import com.oddzmint.actionpilotai.domain.ActionHandler
 
 class CreateEventActionHandler : ActionHandler {
 

@@ -1,14 +1,14 @@
-package com.oddzmint.actionpilotai.presentation.chat.viewmodel
+package com.oddzmint.actionpilotai.presentation
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.oddzmint.actionpilotai.data.AIActionRepositoryImpl
 import com.oddzmint.actionpilotai.data.ai.AIActionService
 import com.oddzmint.actionpilotai.data.ai.GeminiService
-import com.oddzmint.actionpilotai.data.repository.AIActionRepositoryImpl
-import com.oddzmint.actionpilotai.domain.repository.AIActionRepository
-import com.oddzmint.actionpilotai.domain.usecase.GetAiActionUseCase
-import com.oddzmint.actionpilotai.presentation.chat.reducer.ChatReducer
+import com.oddzmint.actionpilotai.domain.AIActionRepository
+import com.oddzmint.actionpilotai.domain.GetAiActionUseCase
+import com.oddzmint.actionpilotai.presentation.chat.ChatReducer
 
 object ChatViewModelFactory {
     val Factory: ViewModelProvider.Factory = viewModelFactory {

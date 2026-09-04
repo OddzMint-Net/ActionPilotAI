@@ -1,14 +1,14 @@
 package com.oddzmint.actionpilotai
 
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.domain.action.ActionType
-import com.oddzmint.actionpilotai.domain.repository.AIActionRepository
-import com.oddzmint.actionpilotai.domain.usecase.GetAiActionUseCase
-import com.oddzmint.actionpilotai.presentation.chat.effect.ChatEffect
-import com.oddzmint.actionpilotai.presentation.chat.intent.ChatIntent
-import com.oddzmint.actionpilotai.presentation.chat.reducer.ChatReducer
-import com.oddzmint.actionpilotai.presentation.chat.viewmodel.ChatViewModel
-import com.oddzmint.actionpilotai.presentation.chat.viewmodel.ChatViewModel.Companion.ERROR_MESSAGE
+import com.oddzmint.actionpilotai.domain.model.ActionType
+import com.oddzmint.actionpilotai.domain.AIActionRepository
+import com.oddzmint.actionpilotai.domain.GetAiActionUseCase
+import com.oddzmint.actionpilotai.presentation.chat.ChatEffect
+import com.oddzmint.actionpilotai.presentation.chat.ChatIntent
+import com.oddzmint.actionpilotai.presentation.chat.ChatReducer
+import com.oddzmint.actionpilotai.presentation.ChatViewModel
+import com.oddzmint.actionpilotai.presentation.ChatViewModel.Companion.ERROR_MESSAGE
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest

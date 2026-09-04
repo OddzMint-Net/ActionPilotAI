@@ -11,10 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.oddzmint.actionpilotai.R
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.domain.action.ActionType
+import com.oddzmint.actionpilotai.domain.model.ActionType
+import com.oddzmint.actionpilotai.presentation.designsystem.tokens.Spacing
 
 @Composable
 fun ActionCard(
@@ -24,16 +24,16 @@ fun ActionCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 24.dp, end = 48.dp)
+            .padding(start = Spacing.Large, end = Spacing.ExtraLarge)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(Spacing.Medium)
         ) {
             Text(
                 text = getActionTitle(action.type),
                 style = MaterialTheme.typography.titleMedium
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(Spacing.Small))
             action.data.forEach { (key, value) ->
                 Text(
                     text = "${key.replaceFirstChar { it.uppercase() }}:$value",
@@ -41,7 +41,7 @@ fun ActionCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(Spacing.Medium))
             PrimaryButton(
                 text = stringResource(R.string.confirm),
                 onClick = { onConfirmClick(action) }

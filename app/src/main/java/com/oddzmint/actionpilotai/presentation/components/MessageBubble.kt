@@ -16,7 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.presentation.chat.model.ChatMessage
+import com.oddzmint.actionpilotai.presentation.chat.ChatMessage
+import com.oddzmint.actionpilotai.presentation.designsystem.theme.ActionPilotColors
+import com.oddzmint.actionpilotai.presentation.designsystem.tokens.Radius
+import com.oddzmint.actionpilotai.presentation.designsystem.tokens.Spacing
 
 @Composable
 fun MessageBubble(
@@ -31,10 +34,10 @@ fun MessageBubble(
             modifier = Modifier
                 .widthIn(max = 280.dp)
                 .background(
-                    color = if (message.isFromUser) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
-                    shape = RoundedCornerShape(18.dp)
+                    color = if (message.isFromUser) ActionPilotColors.Primary else ActionPilotColors.Surface,
+                    shape = RoundedCornerShape(Radius.Medium)
                 )
-                .padding(14.dp)
+                .padding(Spacing.Medium)
         )
         {
             Text(
@@ -42,9 +45,9 @@ fun MessageBubble(
                 style = MaterialTheme.typography.bodyMedium
             )
         }
-        // Action card (if exists)
+
         message.action?.let { action ->
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(Spacing.Small))
             ActionCard(
                 action = action,
                 onConfirmClick = onConfirmAction

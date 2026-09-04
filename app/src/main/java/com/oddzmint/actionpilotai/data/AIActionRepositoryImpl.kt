@@ -1,9 +1,9 @@
-package com.oddzmint.actionpilotai.data.repository
+package com.oddzmint.actionpilotai.data
 
 import com.oddzmint.actionpilotai.data.ai.AIActionService
-import com.oddzmint.actionpilotai.domain.ActionParser
+import com.oddzmint.actionpilotai.data.ai.ActionParser
+import com.oddzmint.actionpilotai.domain.AIActionRepository
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.domain.repository.AIActionRepository
 
 class AIActionRepositoryImpl(
     private val aiActionService: AIActionService

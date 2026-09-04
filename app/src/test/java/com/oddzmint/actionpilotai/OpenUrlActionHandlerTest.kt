@@ -2,7 +2,7 @@ package com.oddzmint.actionpilotai
 
 import android.content.Context
 import com.oddzmint.actionpilotai.data.actions.OpenUrlActionHandler
-import com.oddzmint.actionpilotai.domain.action.ActionType
+import com.oddzmint.actionpilotai.domain.model.ActionType
 import com.oddzmint.actionpilotai.domain.model.AIAction
 import io.mockk.mockk
 import io.mockk.verify

@@ -21,6 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Text
+import com.oddzmint.actionpilotai.presentation.designsystem.theme.ActionPilotColors
+import com.oddzmint.actionpilotai.presentation.designsystem.tokens.Elevation
+import com.oddzmint.actionpilotai.presentation.designsystem.tokens.Spacing
 
 @Composable
 fun ChatInputBar(
@@ -30,13 +33,13 @@ fun ChatInputBar(
     onSendClick: () -> Unit,
     onMicClick: () -> Unit
 ) {
-    Surface(tonalElevation = 4.dp)
+    Surface(tonalElevation = Elevation.Small)
     {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(Spacing.Medium),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.Small)
         ) {
             OutlinedTextField(
                 value = value,
@@ -54,9 +57,9 @@ fun ChatInputBar(
                         Icons.Filled.Mic,
                     contentDescription = if (isListening) "Stop listening" else "Start voice input",
                     tint = if (isListening)
-                        MaterialTheme.colorScheme.error
+                        ActionPilotColors.Error
                     else
-                        MaterialTheme.colorScheme.onSurface
+                        ActionPilotColors.Primary
                 )
             }
 
