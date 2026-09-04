@@ -10,12 +10,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.oddzmint.actionpilotai.domain.action.ActionExecutor
-import com.oddzmint.actionpilotai.presentation.chat.effect.ChatEffect
-import com.oddzmint.actionpilotai.presentation.chat.intent.ChatIntent
-import com.oddzmint.actionpilotai.presentation.chat.ui.ChatScreen
-import com.oddzmint.actionpilotai.presentation.chat.viewmodel.ChatViewModel
-import com.oddzmint.actionpilotai.presentation.chat.viewmodel.ChatViewModelFactory
+import com.oddzmint.actionpilotai.data.actions.ActionExecutor
+import com.oddzmint.actionpilotai.presentation.chat.ChatEffect
+import com.oddzmint.actionpilotai.presentation.chat.ChatIntent
+import com.oddzmint.actionpilotai.presentation.chat.ChatScreen
 
 @Composable
 fun ChatRoute(

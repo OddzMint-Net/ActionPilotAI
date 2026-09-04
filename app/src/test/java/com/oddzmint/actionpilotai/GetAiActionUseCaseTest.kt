@@ -1,9 +1,9 @@
 package com.oddzmint.actionpilotai
 
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.domain.action.ActionType
-import com.oddzmint.actionpilotai.domain.repository.AIActionRepository
-import com.oddzmint.actionpilotai.domain.usecase.GetAiActionUseCase
+import com.oddzmint.actionpilotai.domain.model.ActionType
+import com.oddzmint.actionpilotai.domain.AIActionRepository
+import com.oddzmint.actionpilotai.domain.GetAiActionUseCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Test

@@ -5,8 +5,8 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.domain.action.ActionType
-import com.oddzmint.actionpilotai.domain.action.ActionHandler
+import com.oddzmint.actionpilotai.domain.model.ActionType
+import com.oddzmint.actionpilotai.domain.ActionHandler
 
 class GenerateReplyActionHandler() : ActionHandler {
 

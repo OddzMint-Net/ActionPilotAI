@@ -5,8 +5,8 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.core.net.toUri
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.domain.action.ActionType
-import com.oddzmint.actionpilotai.domain.action.ActionHandler
+import com.oddzmint.actionpilotai.domain.model.ActionType
+import com.oddzmint.actionpilotai.domain.ActionHandler
 
 class DialPhoneActionHandler() : ActionHandler {
 

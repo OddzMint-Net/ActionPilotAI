@@ -1,12 +1,12 @@
 package com.oddzmint.actionpilotai
 
-import com.oddzmint.actionpilotai.domain.action.ActionType
+import com.oddzmint.actionpilotai.domain.model.ActionType
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import com.oddzmint.actionpilotai.presentation.chat.intent.ChatIntent
-import com.oddzmint.actionpilotai.presentation.chat.reducer.ChatReducer
-import com.oddzmint.actionpilotai.presentation.chat.results.ChatResult
-import com.oddzmint.actionpilotai.presentation.chat.state.ChatUiState
-import com.oddzmint.actionpilotai.presentation.chat.viewmodel.ChatViewModel
+import com.oddzmint.actionpilotai.presentation.chat.ChatIntent
+import com.oddzmint.actionpilotai.presentation.chat.ChatReducer
+import com.oddzmint.actionpilotai.presentation.chat.ChatResult
+import com.oddzmint.actionpilotai.presentation.chat.ChatUiState
+import com.oddzmint.actionpilotai.presentation.ChatViewModel
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNotNull

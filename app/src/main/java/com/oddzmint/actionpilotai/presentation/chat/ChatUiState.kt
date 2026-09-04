@@ -1,6 +1,4 @@
-package com.oddzmint.actionpilotai.presentation.chat.state
-
-import com.oddzmint.actionpilotai.presentation.chat.model.ChatMessage
+package com.oddzmint.actionpilotai.presentation.chat
 
 data class ChatUiState(
     val message: List<ChatMessage> = emptyList(),
