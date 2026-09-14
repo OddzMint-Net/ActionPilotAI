@@ -1,6 +1,7 @@
 package com.oddzmint.actionpilotai
 
 import android.content.Context
+import com.oddzmint.actionpilotai.data.actions.IntentLauncher
 import com.oddzmint.actionpilotai.data.actions.OpenUrlActionHandler
 import com.oddzmint.actionpilotai.domain.model.ActionType
 import com.oddzmint.actionpilotai.domain.model.AIAction
@@ -11,11 +12,14 @@ import org.junit.Before
 import org.junit.Test
 
 class OpenUrlActionHandlerTest {
+
+    private lateinit var intentLauncher: IntentLauncher
     private lateinit var handler: OpenUrlActionHandler
 
     @Before
     fun setup() {
-        handler = OpenUrlActionHandler()
+        intentLauncher = mockk(relaxed = true)
+        handler = OpenUrlActionHandler(intentLauncher)
     }
 
     @Test
@@ -28,26 +32,24 @@ class OpenUrlActionHandlerTest {
 
     @Test
     fun `execute opens url when query exist`() {
-        val context = mockk<Context>(relaxed = true)
         val action = AIAction(
             type = ActionType.OPEN_URL,
             data = mapOf("url" to "oddzmint.com")
         )
-        handler.execute(context, action)
-        verify { context.startActivity(any()) }
+        handler.execute(action)
+        verify { intentLauncher.launch(any()) }
     }
 
     @Test
     fun `execute does not open url when query is blank`() {
-        val context = mockk<Context>(relaxed = true)
         val action = AIAction(
             type = ActionType.OPEN_URL,
             data = mapOf("query" to "")
         )
         try {
-            handler.execute(context, action)
+            handler.execute(action)
         } catch (_: Exception) {
         }
-        verify(exactly = 0) { context.startActivity(any()) }
+        verify(exactly = 0) { intentLauncher.launch(any()) }
     }
 }

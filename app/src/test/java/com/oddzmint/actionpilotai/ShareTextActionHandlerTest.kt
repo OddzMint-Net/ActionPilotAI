@@ -1,6 +1,7 @@
 package com.oddzmint.actionpilotai
 
 import android.content.Context
+import com.oddzmint.actionpilotai.data.actions.IntentLauncher
 import com.oddzmint.actionpilotai.data.actions.ShareTextActionHandler
 import com.oddzmint.actionpilotai.domain.model.ActionType
 import com.oddzmint.actionpilotai.domain.model.AIAction
@@ -11,11 +12,13 @@ import org.junit.Before
 import org.junit.Test
 
 class ShareTextActionHandlerTest {
+    private lateinit var intentLauncher: IntentLauncher
     private lateinit var handler: ShareTextActionHandler
 
     @Before
     fun setup() {
-        handler = ShareTextActionHandler()
+        intentLauncher = mockk(relaxed = true)
+        handler = ShareTextActionHandler(intentLauncher)
     }
 
     @Test
@@ -28,27 +31,25 @@ class ShareTextActionHandlerTest {
 
     @Test
     fun `execute launches dialog and shares a text`() {
-        val context = mockk<Context>(relaxed = true)
         val action = AIAction(
             type = ActionType.SHARE_TEXT,
             data = mapOf("text" to "share to whatsapp")
         )
-        handler.execute(context, action)
-        verify { context.startActivity(any()) }
+        handler.execute(action)
+        verify { intentLauncher.launch(any())}
     }
 
     @Test
     fun `execute does not share text when query is blank`() {
-        val context = mockk<Context>(relaxed = true)
         val action = AIAction(
             type = ActionType.SHARE_TEXT,
             data = mapOf("query" to "")
         )
         try {
-            handler.execute(context, action)
+            handler.execute(action)
         } catch (_: Exception) {
         }
 
-        verify(exactly = 0) { context.startActivity(any()) }
+        verify(exactly = 0) { intentLauncher.launch(any())}
     }
 }

@@ -1,6 +1,7 @@
 package com.oddzmint.actionpilotai
 
 import android.content.Context
+import com.oddzmint.actionpilotai.data.actions.IntentLauncher
 import com.oddzmint.actionpilotai.data.actions.SearchWebActionHandler
 import com.oddzmint.actionpilotai.domain.model.ActionType
 import com.oddzmint.actionpilotai.domain.model.AIAction
@@ -11,11 +12,14 @@ import org.junit.Before
 import org.junit.Test
 
 class SearchWebActionHandlerTest {
+
+    private lateinit var intentLauncher: IntentLauncher
     private lateinit var handler: SearchWebActionHandler
 
     @Before
     fun setup() {
-        handler = SearchWebActionHandler()
+        intentLauncher = mockk(relaxed = true)
+        handler = SearchWebActionHandler(intentLauncher)
     }
 
     @Test
@@ -28,29 +32,26 @@ class SearchWebActionHandlerTest {
 
     @Test
     fun `execute launches browser when query exists`() {
-        val context = mockk<Context>(relaxed = true)
         val action = AIAction(
             type = ActionType.SEARCH_WEB,
             data = mapOf("query" to "android mvi")
         )
-        handler.execute(context, action)
+        handler.execute(action)
 
-        verify { context.startActivity(any()) }
+        verify(exactly = 0) { intentLauncher.launch(any()) }
     }
 
     @Test
     fun `execute does not launch browser when query is blank`() {
-        val context = mockk<Context>(relaxed = true)
-
         val action = AIAction(
             type = ActionType.SEARCH_WEB,
             data = mapOf("query" to "")
         )
         try {
-            handler.execute(context, action)
+            handler.execute(action)
         } catch (_: Exception) {
         }
 
-        verify(exactly = 0) { context.startActivity(any()) }
+        verify(exactly = 0) { intentLauncher.launch(any()) }
     }
 }
