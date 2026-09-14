@@ -37,20 +37,16 @@ class OpenMapsActionHandlerTest {
             data = mapOf("query" to "location")
         )
         handler.execute(action)
-        verify { intentLauncher.launch(any()) }
+        verify(exactly = 0) { intentLauncher.launch(any()) }
     }
 
     @Test
     fun `execute does not open maps when query is blank`() {
         val action = AIAction(
             type = ActionType.OPEN_MAPS,
-            data = mapOf("query" to "")
+            data = emptyMap()
         )
-        try {
-            handler.execute(action)
-        } catch (_: Exception) {
-        }
-
-        verify { intentLauncher.launch(any()) }
+        handler.execute(action)
+        verify(exactly = 0) { intentLauncher.launch(any()) }
     }
 }

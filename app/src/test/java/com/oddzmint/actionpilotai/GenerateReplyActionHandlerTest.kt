@@ -36,7 +36,7 @@ class GenerateReplyActionHandlerTest {
     fun `execute does not copy to clipboard when message is blank`() {
         val action = AIAction(
             type = ActionType.GENERATE_REPLY,
-            data = mapOf("message" to "")
+            data = emptyMap()
         )
         val result = handler.execute(action)
 

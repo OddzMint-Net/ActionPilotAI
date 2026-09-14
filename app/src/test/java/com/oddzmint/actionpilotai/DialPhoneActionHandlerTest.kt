@@ -44,12 +44,9 @@ class DialPhoneActionHandlerTest {
     fun `execute does not launch dialer when phone number is blank`() {
         val action = AIAction(
             type = ActionType.DIAL_PHONE,
-            data = mapOf("phoneNumber" to "")
+            data = emptyMap()
         )
-        try {
             handler.execute(action)
-        } catch (_: Exception) {
-        }
 
         verify(exactly = 0) {intentLauncher.launch(any()) }
     }

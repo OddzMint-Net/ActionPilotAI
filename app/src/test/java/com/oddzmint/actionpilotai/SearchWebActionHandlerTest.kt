@@ -38,19 +38,16 @@ class SearchWebActionHandlerTest {
         )
         handler.execute(action)
 
-        verify(exactly = 0) { intentLauncher.launch(any()) }
+        verify(exactly = 1) { intentLauncher.launch(any()) }
     }
 
     @Test
     fun `execute does not launch browser when query is blank`() {
         val action = AIAction(
             type = ActionType.SEARCH_WEB,
-            data = mapOf("query" to "")
+            data = emptyMap()
         )
-        try {
             handler.execute(action)
-        } catch (_: Exception) {
-        }
 
         verify(exactly = 0) { intentLauncher.launch(any()) }
     }
