@@ -4,8 +4,9 @@ import com.oddzmint.actionpilotai.data.ai.AIActionService
 import com.oddzmint.actionpilotai.data.ai.ActionParser
 import com.oddzmint.actionpilotai.domain.AIActionRepository
 import com.oddzmint.actionpilotai.domain.model.AIAction
+import javax.inject.Inject
 
-class AIActionRepositoryImpl(
+class AIActionRepositoryImpl @Inject constructor(
     private val aiActionService: AIActionService
 ) : AIActionRepository {
 

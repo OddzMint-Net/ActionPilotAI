@@ -4,14 +4,16 @@ package com.oddzmint.actionpilotai.data.ai
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.oddzmint.actionpilotai.BuildConfig
+import com.oddzmint.actionpilotai.data.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URI
+import javax.inject.Inject
 
 
-class GeminiService(private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) : AIActionService {
+class GeminiService @Inject constructor(@IoDispatcher private val ioDispatcher: CoroutineDispatcher) : AIActionService {
     companion object {
         private const val GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
     }

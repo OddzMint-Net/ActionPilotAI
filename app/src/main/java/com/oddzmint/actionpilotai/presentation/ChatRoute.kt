@@ -7,20 +7,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.oddzmint.actionpilotai.data.actions.ActionExecutor
 import com.oddzmint.actionpilotai.presentation.chat.ChatEffect
 import com.oddzmint.actionpilotai.presentation.chat.ChatIntent
 import com.oddzmint.actionpilotai.presentation.chat.ChatScreen
 
 @Composable
 fun ChatRoute(
-    viewModel: ChatViewModel = viewModel(factory = ChatViewModelFactory.Factory)
+    viewModel: ChatViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
 
     val voiceLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -45,13 +42,6 @@ fun ChatRoute(
                         putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak your request...")
                     }
                     voiceLauncher.launch(intent)
-                }
-
-                is ChatEffect.ExecuteAction -> {
-                    ActionExecutor.execute(
-                        context = context,
-                        action = effect.action
-                    )
                 }
             }
         }

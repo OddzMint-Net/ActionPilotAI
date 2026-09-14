@@ -6,6 +6,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("jacoco")
     id("org.sonarqube")
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 val localProps = Properties().apply {
@@ -79,6 +81,9 @@ dependencies {
     implementation(libs.lifecycle.runtime)
     implementation(libs.activity.compose)
     implementation(libs.viewmodel.compose)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+    ksp(libs.hilt.compiler)
 
 
     // Compose

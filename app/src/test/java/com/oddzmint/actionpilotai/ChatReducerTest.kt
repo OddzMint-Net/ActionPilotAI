@@ -111,7 +111,7 @@ class ChatReducerTest {
         assertFalse(result.isLoading)
         assertEquals(1, result.message.size)
         assertFalse(result.message.first().isFromUser)
-        assertEquals(action, result.message.first().action)
+        assertEquals(action, result.message.first().pendingActionId)
     }
 
     @Test

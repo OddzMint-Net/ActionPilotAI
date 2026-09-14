@@ -2,27 +2,31 @@ package com.oddzmint.actionpilotai.data.actions
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.core.net.toUri
 import com.oddzmint.actionpilotai.domain.model.AIAction
+import com.oddzmint.actionpilotai.domain.model.ActionHandler
+import com.oddzmint.actionpilotai.domain.model.ActionResult
 import com.oddzmint.actionpilotai.domain.model.ActionType
-import com.oddzmint.actionpilotai.domain.ActionHandler
+import javax.inject.Inject
 
-class OpenMapsActionHandler : ActionHandler {
+class OpenMapsActionHandler @Inject constructor(
+    private val intentLauncher: IntentLauncher
+) : ActionHandler {
     override val type: ActionType = ActionType.OPEN_MAPS
 
-    override fun execute(
-        context: Context,
-        action: AIAction
-    ) {
-        val uri = "geo:0,0?q=\${Uri.encode(location)}".toUri()
+    override fun execute(action: AIAction): ActionResult {
+        val location = action.data["location"] ?: return ActionResult.Failure.MissingData("location")
+        val uri = "geo:0,0?q=${Uri.encode(location)}".toUri()
         val mapsIntent = Intent(Intent.ACTION_VIEW, uri).apply {
             setPackage("com.google.android.apps.maps")
         }
-        try {
-            context.startActivity(mapsIntent)
-        } catch (e: Exception){
-            val fallbackIntent = Intent(Intent.ACTION_VIEW, uri)
-            context.startActivity(fallbackIntent)
+
+        val result = intentLauncher.launch(mapsIntent)
+        return if (result is ActionResult.Failure.NoHandlerApp) {
+            intentLauncher.launch(Intent(Intent.ACTION_VIEW, uri))
+        } else {
+            result
         }
     }
 }

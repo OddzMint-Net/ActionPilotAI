@@ -6,24 +6,22 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.core.net.toUri
 import com.oddzmint.actionpilotai.domain.model.AIAction
+import com.oddzmint.actionpilotai.domain.model.ActionHandler
+import com.oddzmint.actionpilotai.domain.model.ActionResult
 import com.oddzmint.actionpilotai.domain.model.ActionType
-import com.oddzmint.actionpilotai.domain.ActionHandler
+import javax.inject.Inject
 
-class SearchWebActionHandler() : ActionHandler {
+class SearchWebActionHandler @Inject constructor(
+    private val intentLauncher: IntentLauncher
+) : ActionHandler {
 
     override val type: ActionType = ActionType.SEARCH_WEB
 
-    override fun execute(
-        context: Context,
-        action: AIAction
-    ) {
-        val query = action.data["query"].orEmpty()
-        if (query.isBlank()) {
-            Toast.makeText(context, "No search query provided", Toast.LENGTH_SHORT).show()
-            return
-        }
+    override fun execute(action: AIAction): ActionResult {
+
+        val query = action.data["query"] ?: return ActionResult.Failure.MissingData("query")
         val uri = "https://www.google.com/search?q=${Uri.encode(query)}".toUri()
         val intent = Intent(Intent.ACTION_VIEW, uri)
-        context.startActivity(intent)
+        return intentLauncher.launch(intent)
     }
 }
