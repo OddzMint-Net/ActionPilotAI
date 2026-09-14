@@ -3,12 +3,16 @@ package com.oddzmint.actionpilotai
 import com.oddzmint.actionpilotai.domain.model.AIAction
 import com.oddzmint.actionpilotai.domain.model.ActionType
 import com.oddzmint.actionpilotai.domain.AIActionRepository
+import com.oddzmint.actionpilotai.domain.ExecuteActionUseCase
 import com.oddzmint.actionpilotai.domain.GetAiActionUseCase
+import com.oddzmint.actionpilotai.domain.model.ActionResult
 import com.oddzmint.actionpilotai.presentation.chat.ChatEffect
 import com.oddzmint.actionpilotai.presentation.chat.ChatIntent
 import com.oddzmint.actionpilotai.presentation.chat.ChatReducer
 import com.oddzmint.actionpilotai.presentation.ChatViewModel
 import com.oddzmint.actionpilotai.presentation.ChatViewModel.Companion.ERROR_MESSAGE
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -39,11 +43,13 @@ class ChatViewModelTest {
         repository = AIActionRepository { throw Exception("Service failed") }
     )
 
+    private val executeActionUseCase: ExecuteActionUseCase = mockk()
 
     @Test
     fun `onInputChange updates user input`() {
         val viewModel = ChatViewModel(
             getAiActionUseCase = FakeGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
             reducer = ChatReducer()
         )
         viewModel.onIntent(ChatIntent.UpdateInput("Create meeting tomorrow"))
@@ -53,7 +59,9 @@ class ChatViewModelTest {
     @Test
     fun `onSendClick adds user message and clears input`() = runTest {
         val viewModel = ChatViewModel(
-            getAiActionUseCase = FakeGetAiActionUseCase(), reducer = ChatReducer()
+            getAiActionUseCase = FakeGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
+            reducer = ChatReducer()
         )
 
         viewModel.onIntent(ChatIntent.UpdateInput("Schedule meeting tomorrow"))
@@ -70,7 +78,9 @@ class ChatViewModelTest {
     @Test
     fun `onSendClick shows error message when service fails`() = runTest {
         val viewModel = ChatViewModel(
-            getAiActionUseCase = FailingGetAiActionUseCase(), reducer = ChatReducer()
+            getAiActionUseCase = FailingGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
+            reducer = ChatReducer()
         )
         viewModel.onIntent(ChatIntent.UpdateInput("Schedule meeting tomorrow"))
         viewModel.onIntent(ChatIntent.SendMessage)
@@ -85,7 +95,9 @@ class ChatViewModelTest {
     @Test
     fun `initial state is empty`() {
         val viewModel = ChatViewModel(
-            getAiActionUseCase = FakeGetAiActionUseCase(), reducer = ChatReducer()
+            getAiActionUseCase = FakeGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
+            reducer = ChatReducer()
         )
         val state = viewModel.uiState.value
 
@@ -97,7 +109,9 @@ class ChatViewModelTest {
     @Test
     fun `onSendClick does nothing when input is blank`() = runTest {
         val viewModel = ChatViewModel(
-            getAiActionUseCase = FakeGetAiActionUseCase(), reducer = ChatReducer()
+            getAiActionUseCase = FakeGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
+            reducer = ChatReducer()
         )
 
         viewModel.onIntent(ChatIntent.UpdateInput(" "))
@@ -111,19 +125,27 @@ class ChatViewModelTest {
         assertFalse(state.isLoading)
     }
 
+
+
     @Test
     fun `initial state is empty when using default view model constructor`() {
-        val viewModel = ChatViewModel(getAiActionUseCase = FakeGetAiActionUseCase(), reducer = ChatReducer())
+        val viewModel = ChatViewModel(
+            getAiActionUseCase = FakeGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
+            reducer = ChatReducer()
+        )
         val state = viewModel.uiState.value
         assertTrue(state.message.isEmpty())
         assertEquals("", state.userInput)
         assertFalse(state.isLoading)
     }
 
+
     @Test
     fun `onSendClick shows loading state while waiting for AI response`() = runTest {
         val viewModel = ChatViewModel(
             getAiActionUseCase = FakeGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
             reducer = ChatReducer()
         )
         viewModel.onIntent(ChatIntent.UpdateInput("Schedule meeting"))
@@ -137,6 +159,7 @@ class ChatViewModelTest {
     fun `onSendClick adds AI response message on success`() = runTest {
         val viewModel = ChatViewModel(
             getAiActionUseCase = FakeGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
             reducer = ChatReducer()
         )
         viewModel.onIntent(ChatIntent.UpdateInput("Create a meeting"))
@@ -151,6 +174,7 @@ class ChatViewModelTest {
     fun `SubmitVoiceInput adds user message and triggers AI call`() = runTest {
         val viewModel = ChatViewModel(
             getAiActionUseCase = FakeGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
             reducer = ChatReducer()
         )
         viewModel.onIntent(ChatIntent.SubmitVoiceInput("Call Odwa"))
@@ -165,19 +189,21 @@ class ChatViewModelTest {
     fun `SubmitVoiceInput with blank input still adds message`() = runTest {
         val viewModel = ChatViewModel(
             getAiActionUseCase = FakeGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
             reducer = ChatReducer()
         )
         viewModel.onIntent(ChatIntent.SubmitVoiceInput(" "))
         advanceUntilIdle()
         val state = viewModel.uiState.value
-        assertEquals(1,state.message.size)
-        assertEquals("",state.message.first().text)
+        assertEquals(1, state.message.size)
+        assertEquals("", state.message.first().text)
     }
 
     @Test
     fun `StartVoiceInput emits LaunchVoiceInput effect`() = runTest {
         val viewModel = ChatViewModel(
             getAiActionUseCase = FakeGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
             reducer = ChatReducer()
         )
         viewModel.onIntent(ChatIntent.StartVoiceInput)
@@ -187,25 +213,30 @@ class ChatViewModelTest {
     }
 
     @Test
-    fun `Confirmation emits ExecuteAction effect`() = runTest {
-        val viewModel = ChatViewModel(
-            getAiActionUseCase = FakeGetAiActionUseCase(),
-            reducer = ChatReducer()
-        )
+    fun `ConfirmAction invokes executeActionUseCase and updates state with result`() = runTest {
         val action = AIAction(
             type = ActionType.CREATE_EVENT,
             data = mapOf("title" to "Team meeting")
         )
+
+        every { executeActionUseCase(action) } returns ActionResult.Success
+        val viewModel = ChatViewModel(
+            getAiActionUseCase = FakeGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
+            reducer = ChatReducer()
+        )
         viewModel.onIntent(ChatIntent.ConfirmAction(action))
         advanceUntilIdle()
-        val effect = viewModel.effects.first()
-        assertEquals(ChatEffect.ExecuteAction(action), effect)
+        val state = viewModel.uiState.value
+        assertEquals("Done.", state.message.last().text)
+        assertFalse(state.message.last().isFromUser)
     }
 
     @Test
     fun `SubmitVoiceInput shows error message when service fails`() = runTest {
         val viewModel = ChatViewModel(
             getAiActionUseCase = FailingGetAiActionUseCase(),
+            executeActionUseCase = executeActionUseCase,
             reducer = ChatReducer()
         )
         viewModel.onIntent(ChatIntent.SubmitVoiceInput("Book a flight"))

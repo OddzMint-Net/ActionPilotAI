@@ -1,32 +1,29 @@
 package com.oddzmint.actionpilotai.data.actions
 
-import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.core.net.toUri
 import com.oddzmint.actionpilotai.domain.model.AIAction
+import com.oddzmint.actionpilotai.domain.model.ActionHandler
+import com.oddzmint.actionpilotai.domain.model.ActionResult
 import com.oddzmint.actionpilotai.domain.model.ActionType
-import com.oddzmint.actionpilotai.domain.ActionHandler
+import javax.inject.Inject
 
-class OpenUrlActionHandler() : ActionHandler {
+class OpenUrlActionHandler @Inject constructor(
+    private val intentLauncher: IntentLauncher
+) : ActionHandler {
 
     override val type: ActionType = ActionType.OPEN_URL
 
-    override fun execute(
-        context: Context,
-        action: AIAction
-    ) {
-        val url = action.data["url"].orEmpty()
-        if (url.isBlank()) {
-            Toast.makeText(context, "No URL provided", Toast.LENGTH_SHORT).show()
-            return
-        }
+    override fun execute(action: AIAction): ActionResult {
+
+        val url = action.data["url"] ?: return ActionResult.Failure.MissingData("url")
         val safeUri = if (url.startsWith("http://") || url.startsWith("https://")) {
             url
         } else {
             "https://$url"
         }
+
         val intent = Intent(Intent.ACTION_VIEW, safeUri.toUri())
-        context.startActivity(intent)
+        return intentLauncher.launch(intent)
     }
 }

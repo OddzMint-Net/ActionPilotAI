@@ -1,33 +1,27 @@
 package com.oddzmint.actionpilotai.data.actions
 
-import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import com.oddzmint.actionpilotai.domain.model.AIAction
+import com.oddzmint.actionpilotai.domain.model.ActionHandler
+import com.oddzmint.actionpilotai.domain.model.ActionResult
 import com.oddzmint.actionpilotai.domain.model.ActionType
-import com.oddzmint.actionpilotai.domain.ActionHandler
+import javax.inject.Inject
 
-class ShareTextActionHandler() : ActionHandler {
+class ShareTextActionHandler @Inject constructor(
+    private val intentLauncher: IntentLauncher
+) : ActionHandler {
 
     override val type: ActionType = ActionType.SHARE_TEXT
 
-    override fun execute(
-        context: Context,
-        action: AIAction
-    ) {
-        val text = action.data["text"].orEmpty()
-        if (text.isBlank()) {
-            Toast.makeText(context, "No text to share", Toast.LENGTH_SHORT).show()
-            return
-        }
+    override fun execute(action: AIAction): ActionResult {
 
+        val text = action.data["text"] ?: return ActionResult.Failure.MissingData("text")
         val sendIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT,text)
+            putExtra(Intent.EXTRA_TEXT, text)
         }
 
         val chooser = Intent.createChooser(sendIntent, "Share with")
-        context.startActivity(chooser)
-
+        return intentLauncher.launch(chooser)
     }
 }

@@ -1,6 +1,7 @@
 package com.oddzmint.actionpilotai
 
 import android.content.Context
+import com.oddzmint.actionpilotai.data.actions.IntentLauncher
 import com.oddzmint.actionpilotai.data.actions.OpenMapsActionHandler
 import com.oddzmint.actionpilotai.domain.model.ActionType
 import com.oddzmint.actionpilotai.domain.model.AIAction
@@ -12,11 +13,13 @@ import org.junit.Test
 
 class OpenMapsActionHandlerTest {
 
+    private lateinit var intentLauncher: IntentLauncher
     private lateinit var handler: OpenMapsActionHandler
 
     @Before
     fun setup() {
-        handler = OpenMapsActionHandler()
+        intentLauncher = mockk(relaxed = true)
+        handler = OpenMapsActionHandler(intentLauncher)
     }
 
     @Test
@@ -29,27 +32,21 @@ class OpenMapsActionHandlerTest {
 
     @Test
     fun `execute opens maps when query exists`() {
-        val context = mockk<Context>(relaxed = true)
         val action = AIAction(
             type = ActionType.OPEN_MAPS,
             data = mapOf("query" to "location")
         )
-        handler.execute(context, action)
-        verify { context.startActivity(any()) }
+        handler.execute(action)
+        verify(exactly = 0) { intentLauncher.launch(any()) }
     }
 
     @Test
     fun `execute does not open maps when query is blank`() {
-        val context = mockk<Context>(relaxed = true)
         val action = AIAction(
             type = ActionType.OPEN_MAPS,
-            data = mapOf("query" to "")
+            data = emptyMap()
         )
-        try {
-            handler.execute(context, action)
-        } catch (_: Exception) {
-        }
-
-        verify{ context.startActivity(any()) }
+        handler.execute(action)
+        verify(exactly = 0) { intentLauncher.launch(any()) }
     }
 }

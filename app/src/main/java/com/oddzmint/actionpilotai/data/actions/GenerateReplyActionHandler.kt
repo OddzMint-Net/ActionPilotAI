@@ -2,29 +2,25 @@ package com.oddzmint.actionpilotai.data.actions
 
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
-import android.widget.Toast
 import com.oddzmint.actionpilotai.domain.model.AIAction
+import com.oddzmint.actionpilotai.domain.model.ActionHandler
+import com.oddzmint.actionpilotai.domain.model.ActionResult
 import com.oddzmint.actionpilotai.domain.model.ActionType
-import com.oddzmint.actionpilotai.domain.ActionHandler
+import javax.inject.Inject
 
-class GenerateReplyActionHandler() : ActionHandler {
+class GenerateReplyActionHandler @Inject constructor(
+    private val clipboardManager: ClipboardManager
+) : ActionHandler {
 
     override val type: ActionType = ActionType.GENERATE_REPLY
 
-    override fun execute(
-        context: Context,
-        action: AIAction
-    ) {
-        val message = action.data["message"].orEmpty()
-        if (message.isBlank()) {
-            Toast.makeText(context, "No reply generated", Toast.LENGTH_SHORT).show()
-            return
+    override fun execute(action: AIAction): ActionResult {
+        val message = action.data["message"] ?: return ActionResult.Failure.MissingData("message")
+        return try {
+            clipboardManager.setPrimaryClip(ClipData.newPlainText("ActionPilotAI Reply", message))
+            ActionResult.Success
+        } catch (e: Exception) {
+            ActionResult.Failure.Unexpected(e.message ?: "Unknown error copying reply")
         }
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("ActionPilotAI Reply", message)
-        clipboard.setPrimaryClip(clip)
-        Toast.makeText(context, "Reply copied", Toast.LENGTH_SHORT).show()
-        return
     }
 }

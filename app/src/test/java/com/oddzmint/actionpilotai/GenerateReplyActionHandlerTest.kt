@@ -1,62 +1,46 @@
 package com.oddzmint.actionpilotai
 
 import android.content.ClipboardManager
-import android.content.Context
 import com.oddzmint.actionpilotai.data.actions.GenerateReplyActionHandler
 import com.oddzmint.actionpilotai.domain.model.ActionType
 import com.oddzmint.actionpilotai.domain.model.AIAction
-import io.mockk.every
+import com.oddzmint.actionpilotai.domain.model.ActionResult
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 class GenerateReplyActionHandlerTest {
+
+    private lateinit var clipboardManager: ClipboardManager
     private lateinit var handler: GenerateReplyActionHandler
 
     @Before
     fun setup() {
-        handler = GenerateReplyActionHandler()
+        clipboardManager = mockk(relaxed = true)
+        handler = GenerateReplyActionHandler(clipboardManager)
     }
 
     @Test
-    fun `execute generate reply when query exist`() {
-        val clipboard = mockk<ClipboardManager>(relaxed = true)
-        val context = mockk<Context>(relaxed = true)
-
-        every {
-            context.getSystemService(Context.CLIPBOARD_SERVICE)
-        } returns clipboard
-
+    fun `execute copies reply to clipboard when message exists`() {
         val action = AIAction(
             type = ActionType.GENERATE_REPLY,
             data = mapOf("message" to "hello message")
         )
-        try {
-            handler.execute(context,action)
-        } catch (_:Exception){}
-
-        verify(exactly = 1) { clipboard.setPrimaryClip(any()) }
+            handler.execute(action)
+        verify(exactly = 1) { clipboardManager.setPrimaryClip(any()) }
     }
 
     @Test
-    fun `execute does not generate reply when query is blank`() {
-        val clipboard = mockk<ClipboardManager>(relaxed = true)
-        val context = mockk<Context>(relaxed = true)
-
-        every {
-            context.getSystemService(Context.CLIPBOARD_SERVICE)
-        } returns clipboard
-
+    fun `execute does not copy to clipboard when message is blank`() {
         val action = AIAction(
             type = ActionType.GENERATE_REPLY,
-            data = mapOf("message" to "")
+            data = emptyMap()
         )
-        try {
-            handler.execute(context, action)
-        } catch (_: Exception) {
+        val result = handler.execute(action)
 
-        }
-        verify(exactly = 0) { clipboard.setPrimaryClip(any()) }
+        assertTrue(result is ActionResult.Failure.MissingData)
+        verify(exactly = 0) { clipboardManager.setPrimaryClip(any()) }
     }
 }

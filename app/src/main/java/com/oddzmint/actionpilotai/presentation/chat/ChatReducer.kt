@@ -1,8 +1,9 @@
 package com.oddzmint.actionpilotai.presentation.chat
 
 import com.oddzmint.actionpilotai.presentation.ChatViewModel
+import javax.inject.Inject
 
-class ChatReducer {
+class ChatReducer @Inject constructor() {
 
     operator fun invoke(
         current: ChatUiState,
@@ -85,6 +86,14 @@ class ChatReducer {
                     isFromUser = false
                 ),
                 isLoading = false
+            )
+
+            is ChatResult.ActionOutcome -> current.copy(
+                message = current.message + ChatMessage(
+                    text = result.message,
+                    isFromUser = false,
+                    isError = result.isError
+                )
             )
         }
     }
