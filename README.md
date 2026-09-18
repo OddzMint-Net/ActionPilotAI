@@ -41,10 +41,11 @@ An AI-powered Android assistant that converts natural language into real device 
 
 ## 📱 Screenshots
 ### Event Screen
-![Action](screenshots/create_event.jpeg)
-![Action](screenshots/meeting.jpeg)
-![Action](screenshots/phone_call.jpeg)
-![Action](screenshots/phone.jpeg)
-![Action](screenshots/maps.jpeg)
+![Action](screenshots/create_event/create_event.png)
+![Action](screenshots/create_event/create_event_dark_mode.png)
+![Action](screenshots/create_event/empty_state.png)
+![Action](screenshots/create_event/empty_state_dark_mode.png)
+![Action](screenshots/create_event/loading_state.png)
+![Action](screenshots/create_event/loading_dark_mode.png)
 
 ---
