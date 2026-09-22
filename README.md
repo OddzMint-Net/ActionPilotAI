@@ -1,8 +1,17 @@
 # ActionPilotAI 🚀
 
-An AI-powered Android assistant that converts natural language into real device actions — call a contact, search the web, open maps, schedule events, share text, and more.
+An AI-powered Android assistant that converts natural language into real device actions — call a contact, search the
+web, open maps, schedule events, share text, and more.
 
 ---
+## 📱 Screenshots
+
+### Event Screen
+
+![Action](screenshots/create_event/screen1.png)
+![Action](screenshots/create_event/screen2.png)
+![Action](screenshots/create_event/screen3.png)
+
 
 ## ✨ Features
 
@@ -15,7 +24,8 @@ An AI-powered Android assistant that converts natural language into real device 
 - 📞 Dial phone numbers
   🎤 Voice input support
 - ⚡ Real-time AI integration using Gemini API
--  🎯 Clean MVI architecture with unidirectional data flow
+- 🎯 Clean MVI architecture with unidirectional data flow
+
 ---
 
 ## 🛠️ Tech Stack
@@ -28,7 +38,7 @@ An AI-powered Android assistant that converts natural language into real device 
 - **Device Actions = Android Intents**
 - **Testing = JUnit - MockK - Turbine - Coroutines Test**
 - **Code Quality = SonarCloud - JaCoCo**
-- **CI/CD  =  GitHub Actions**
+- **CI/CD = GitHub Actions**
 
 ---
 
@@ -39,13 +49,5 @@ An AI-powered Android assistant that converts natural language into real device 
 - **ActionPilotAI maps the action to the correct Android Intent**
 - **The device executes the action — opens maps, dials a number, creates an event, etc.**
 
-## 📱 Screenshots
-### Event Screen
-![Action](screenshots/create_event/create_event.png)
-![Action](screenshots/create_event/create_event_dark_mode.png)
-![Action](screenshots/create_event/empty_state.png)
-![Action](screenshots/create_event/empty_state_dark_mode.png)
-![Action](screenshots/create_event/loading_state.png)
-![Action](screenshots/create_event/loading_dark_mode.png)
 
 ---

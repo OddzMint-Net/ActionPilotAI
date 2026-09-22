@@ -88,7 +88,7 @@ fun ChatScreen(
     }
 }
 
-@Preview(showBackground = true, name = "Chat flow", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(showBackground = true, name = "Chat flow", uiMode = Configuration.UI_MODE_NIGHT_YES,device = "spec:width=1080px,height=1920px,dpi=440")
 @Composable
 private fun ChatScreenPreview() {
     ActionPilotAITheme {
@@ -112,7 +112,32 @@ private fun ChatScreenPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Empty state")
+
+@Preview(showBackground = true, name = "Chat flow", device = "spec:width=1080px,height=1920px,dpi=440")
+@Composable
+private fun ChatScreenDarkPreview() {
+    ActionPilotAITheme {
+        ChatScreen(
+            uiState = ChatUiState(
+                message = listOf(
+                    ChatMessage(text = "Where should I send this and for when?", isFromUser = false),
+                    ChatMessage(text = "Set up a meeting with Odwa at the OddzMint offices, 3pm", isFromUser = true),
+                    ChatMessage(
+                        text = "Got it - one action ready",
+                        isFromUser = false,
+                        action = AIAction(
+                            type = ActionType.CREATE_EVENT,
+                            data = mapOf("with" to "Odwa", "where" to "OddzMint office", "time" to "3:00 PM")
+                        )
+                    )
+                )
+            ),
+            onIntent = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Empty state",device = "spec:width=1080px,height=1920px,dpi=440")
 @Composable
 private fun ChatScreenEmptyPreview() {
     ActionPilotAITheme {
@@ -120,7 +145,7 @@ private fun ChatScreenEmptyPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Loading", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(showBackground = true, name = "Loading", uiMode = Configuration.UI_MODE_NIGHT_YES,device = "spec:width=1080px,height=1920px,dpi=440")
 @Composable
 private fun ChatScreenLoadingPreview() {
     ActionPilotAITheme {
